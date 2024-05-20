@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-const create = () => {
+const Create = () => {
     return ( 
         <>
             <div className="content-wrapper">

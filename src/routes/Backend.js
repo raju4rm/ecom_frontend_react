@@ -8,8 +8,7 @@ import Login from '../components/authentication/Login';
 import AuthLayout from '../components/layout/Auth';
 import MainLayout from '../components/layout/Main';
 
-import RoleList from '../components/role/list'
-import RoleCreate from '../components/role/create'
+import Test from '../components/test/Test'
 // import ForgotPassword from '../components/authentication/ForgotPassword';
 
 const Backend = () => {
@@ -27,8 +26,8 @@ const Backend = () => {
         >
             <Route path="/home1" element={<Home1 />} />
             <Route path="/home2" element={<Home2 />} />
-            <Route path="/role" element={<RoleList />} />
-            <Route path="/role/create" element={<RoleCreate />} />
+
+            <Route path="/test" element={<Test />} />
         </Route>
       </Routes>
     </Router>

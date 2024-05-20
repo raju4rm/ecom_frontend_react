@@ -17,11 +17,15 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import header from './backend/header/slice';
 import permission from './backend/permission/slice';
 import login from './login/slice';
+import role from './role/slice';
+import pagination from './paginationSlice';
 
 const rootReducer = combineReducers({
   header,
   permission,
-  login
+  login,
+  role,
+  pagination
 });
 
 const persistConfig = {

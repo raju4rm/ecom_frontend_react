@@ -1,0 +1,141 @@
+.p-datatable-table th{
+    background-color: #99cf77;
+}
+
+table.p-datatable-table {
+    border-radius: 5px;
+    /* overflow: hidden; */
+}
+
+.custom-card{
+    background-color: #e7d9c0!important;
+    box-shadow: 8px 8px 5px #ed6301!important;
+}
+
+
+
+.custom-container-fluid{
+    background-color: #e7d9c0!important;
+    box-shadow: 8px 8px 8px #ed6301!important;
+    border-radius: 5px;
+    overflow: hidden;
+    width:99%!important;
+    padding-top:10px;;
+    margin-bottom: 20px;
+
+}
+.custom-card-default{
+    background-color: #cdc0e7!important;
+    box-shadow: 8px 8px 8px #1a01edc9!important;
+    border-radius: 5px;
+    overflow: hidden;
+    width:99%!important;
+    padding-top:10px;;
+    margin-bottom: 20px;
+    margin: 0 auto;
+
+}
+
+.p-button:not(.p-button-rounded) {
+    border-radius: 6px!important;
+}
+
+.custom_label{
+    color:#000;
+}
+
+.floating-label-select {
+    position: relative;
+  }
+  
+  .floating-label {
+    position: absolute;
+    left: 11px;
+    top: 6px;
+    transition: all 0.2s;
+    color: #000;
+    pointer-events: none;
+    font-size: 16px;
+    background: white;
+    padding: 0 5px;
+    z-index: 1;
+  }
+  
+  .floating-label.focused {
+    top: -23px;
+    left: 0px;
+    font-size: 12px;
+    color: #000;
+    background: transparent;
+  }
+  
+  .floating-label-select .react-select__control {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .floating-label-select .react-select__value-container {
+    padding: 0 8px;
+  }
+
+ .custom-breadcrumb{
+    background-color: #212207;
+    /* border:0px!important; */
+    border-radius: 5px;
+    float: right;
+    height:45px!important;
+    margin-bottom: -7px;
+    
+ }
+ .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text{
+    color: #fff!important;
+ }
+ .p-menuitem-separator{
+    color: #fff!important;
+ }
+ .p-menuitem a.text-primary.active{
+    color: #c7f903!important;
+ }
+ .p-menuitem a.text-primary{
+    color: #fff!important;
+ }
+
+ .p-paginator-bottom{
+    background-color: #035611;
+    border-radius: 40px;
+    margin-top: 10px;;
+ }
+ .p-paginator-element,.p-paginator-current{
+    color: #fff;
+ }
+ .p-paginator {
+    background-color: #eb0000;
+    border-radius: 40px;
+    margin-top: 10px;;
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+    
+ }
+ .p-paginator .p-paginator-first:not(.p-disabled):not(.p-highlight):hover, .p-paginator .p-paginator-prev:not(.p-disabled):not(.p-highlight):hover, .p-paginator .p-paginator-next:not(.p-disabled):not(.p-highlight):hover, .p-paginator .p-paginator-last:not(.p-disabled):not(.p-highlight):hover {
+    background: #7b869b;
+ }
+
+ .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
+    background: #7b869b;
+ }
+ 
+ .p-paginator-element,.p-paginator-current{
+    color: #fff;
+ }
+ .mx-3{
+    color:#fff!important;
+ }
+
+ .custom_page_head{
+    background-color: #46ed01f2;
+    border-top-right-radius: 50px; 
+    border-bottom-right-radius: 50px; 
+ }
+
+ 

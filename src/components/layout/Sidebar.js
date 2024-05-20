@@ -135,52 +135,52 @@ const Sidebar = () => {
                 </ul>
               </li> */}
               {menuList.map(eachMenu => (
-                  <>
-                    {eachMenu.label != null && eachMenu.label !== '' && (
-                      <li key={eachMenu.id} className="nav-header">{eachMenu.label}</li>
-                    )}                    
-                    <li className="nav-item" id={eachMenu.id}>
-                      <a href={eachMenu.url} className="nav-link" onClick={() => menuToggle(eachMenu.id)}>
-                        <i className="nav-icon fas fa-circle" />
-                        <p>
-                          {eachMenu.name}
-                          {eachMenu.sub_menu != null && eachMenu.sub_menu !== '' && (
-                            <i className="right fas fa-angle-left" />
-                          )}
-                        </p>
-                      </a>
-                      {eachMenu.sub_menu != null && eachMenu.sub_menu !== '' && (
-                        <ul className="nav nav-treeview">
-                          {eachMenu.sub_menu.map(eachSubMenu => (
-                            <li className="nav-item"  id={eachSubMenu.id}>
-                              <a href={eachSubMenu.url} className="nav-link" onClick={() => menuSubToggle(eachSubMenu.id)}>
-                                <i className="far fa-circle nav-icon" />
-                                <p>
-                                  {eachSubMenu.name}
-                                  {eachSubMenu.sub_menu != null && eachSubMenu.sub_menu !== '' && (
-                                    <i className="right fas fa-angle-left" />
-                                  )}
-                                </p>
-                              </a>
-                              {eachSubMenu.sub_menu != null && eachSubMenu.sub_menu !== '' && (
-                                <ul className="nav nav-treeview">
-                                  {eachSubMenu.sub_menu.map(eachSubSubMenu => (
-                                      <li className="nav-item">
-                                        <a href={eachSubSubMenu.url} className="nav-link" id={eachSubSubMenu.id}>
-                                          <i className="far fa-dot-circle nav-icon" />
-                                          <p>{eachSubSubMenu.name}</p>
-                                        </a>
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  </>
+                <React.Fragment key={eachMenu.id}>
+                  {eachMenu.label != null && eachMenu.label !== '' && (
+                    <li className="nav-header" key={eachMenu.id + '-label'}>{eachMenu.label}</li>
+                  )}                    
+                  <li className="nav-item" id={eachMenu.id} key={eachMenu.id}>
+                    <a href={eachMenu.url} className="nav-link" onClick={() => menuToggle(eachMenu.id)}>
+                      <i className="nav-icon fas fa-circle" />
+                      <p>
+                        {eachMenu.name}
+                        {eachMenu.sub_menu != null && eachMenu.sub_menu !== '' && (
+                          <i className="right fas fa-angle-left" />
+                        )}
+                      </p>
+                    </a>
+                    {eachMenu.sub_menu != null && eachMenu.sub_menu !== '' && (
+                      <ul className="nav nav-treeview">
+                        {eachMenu.sub_menu.map(eachSubMenu => (
+                          <li className="nav-item"  id={eachSubMenu.id} key={eachSubMenu.id}>
+                            <a href={eachSubMenu.url} className="nav-link" onClick={() => menuSubToggle(eachSubMenu.id)}>
+                              <i className="far fa-circle nav-icon" />
+                              <p>
+                                {eachSubMenu.name}
+                                {eachSubMenu.sub_menu != null && eachSubMenu.sub_menu !== '' && (
+                                  <i className="right fas fa-angle-left" />
+                                )}
+                              </p>
+                            </a>
+                            {eachSubMenu.sub_menu != null && eachSubMenu.sub_menu !== '' && (
+                              <ul className="nav nav-treeview">
+                                {eachSubMenu.sub_menu.map(eachSubSubMenu => (
+                                    <li className="nav-item" key={eachSubSubMenu.id}>
+                                      <a href={eachSubSubMenu.url} className="nav-link" id={eachSubSubMenu.id}>
+                                        <i className="far fa-dot-circle nav-icon" />
+                                        <p>{eachSubSubMenu.name}</p>
+                                      </a>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                </React.Fragment>
               )
               )}
 
