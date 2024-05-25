@@ -1,5 +1,4 @@
-import React,{ useEffect, useState }  from 'react'
-import { Link } from 'react-router-dom';
+import React,{ useCallback, useEffect, useState }  from 'react'
 import { Button } from 'primereact/button';
 
 import { DataTable } from 'primereact/datatable';
@@ -9,333 +8,66 @@ import 'primereact/resources/themes/nano/theme.css';
 import 'primeicons/primeicons.css';
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
-import { BreadCrumb } from 'primereact/breadcrumb';
-import { Paginator } from 'primereact/paginator';
+
 import { getList } from '../../store/role/action'
 import { useDispatch, useSelector } from 'react-redux';
 import PaginatorComponent from '../PaginatorComponent';
-
+import BreadCrumbComponent from '../BreadCrumbComponent';
+import SelectBoxComponent from '../SelectBoxComponent';
+import TextBoxFloating from '../TextBoxFloating';
 
 const Test = () => {
+    const module = 'Test';
+    const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
+    const [formData, setFormData]                   = useState({name:"", username:"", test:""}); 
+    const {name, username, test} = formData;
+    
+     
+    // On change update value
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+      };
+    
+      const handleSelectChange = (selectedOption, fieldName) => {
+        let value;
+        if(selectedOption){
+            value=selectedOption.value;
+        }else{
+            value='';
+        }
+        setFormData({
+          ...formData,
+          [fieldName.name]:  value ,
+        });
+      };
+    //Call get api
+
+    const handleSubmit = async (e) => { 
+        console.log(formData)  
+        e.preventDefault();
+        const error =  !username || !name;
+        if (error) {
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
+            console.log(validationErrors)
+        } else {
+            //await dispatch(setAdd(formData))
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
+        } 
+    };
+
+    
+    /* start filter */
     const [isCollapsFilter,setIsCollapsFilter]= useState(true);
     const toggleFilter = () => {
         setIsCollapsFilter(!isCollapsFilter);
-        console.log(isCollapsFilter)
     }
-
-    // breadcrumb start
-    const items1 = [
-        { label: 'Components' },
-        {
-            label: 'Form',
-            template: () => <Link href="/inputtext"className="text-primary font-semibold">Form</Link>
-        },
-        {
-            label: 'InputText',
-            template: () => <Link href="/inputtext" className="text-primary font-semibold active">InputText</Link>
-        }
-    ];
-    const home = { icon: 'pi pi-home', url: 'https://primereact.org' };
-    // breadcrumb end
-
-
-    const customers=[
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-    ]
 
     // loading button start
     const [loading, setLoading] = useState(false);
-    const [value, setValue] = useState('');
-
     const load = () => {
         setLoading(true);
 
@@ -345,25 +77,36 @@ const Test = () => {
     };
     //loading button end 
 
+    /* end filter */
+
+    /* start breadCrumb value */
+    const BreadCrumbValue = [
+        {
+            label: 'Role',
+        },
+        {
+            label: 'Permission',
+        },
+        {
+            label: 'Permission',
+            template:[
+                {
+                    link: 'test',
+                    linkLabel: 'Create'
+                }
+            ]
+        },
+    ]
+    
+    /* end breadCrumb value */
+
     // select start
-    const animatedComponents = makeAnimated();
 
     const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
+        { value: 1, label: 'Chocolate' },
+        { value: 2, label: 'Strawberry' },
+        { value: 3, label: 'Vanilla' },
     ];
-
-    const [isFocused, setIsFocused] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [isClearable, setIsClearable] = useState(true);
-    const [isSearchable, setIsSearchable] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isRtl, setIsRtl] = useState(false);
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
-    const handleChange = (option) => setSelectedOption(option);
 
     // select end
 
@@ -381,7 +124,6 @@ const Test = () => {
 
     useEffect(() => {
         getItemList()
-        console.log(pageNo,445)
     }, [limitPerPage, pageNo]);
 
     const { success, summary, severity, message,items,totalCount } = states
@@ -394,82 +136,91 @@ const Test = () => {
     return ( 
         <>
             <div className="content-wrapper">
-                <section className="content-header">
-                    <div className="container-fluid ">
-                        <div className="row mb-2">
-                        <div className="col-sm-6 custom_page_head">
-                            <h1>General Form</h1>
-                        </div>
-                        <div className="col-sm-6">
-                        <BreadCrumb model={items1} home={home}  className="custom-breadcrumb"/>
 
-                        </div>
-                        </div>
-                    </div>
-                </section>
+                <BreadCrumbComponent BreadCrumbValue={BreadCrumbValue} module={module}/>
 
-
+                {/* start filter  */}
                 <section className="content">
-                        <div className={`card card-default custom-card-default ${isCollapsFilter?'collapsed-card':''}`}>
-                            <div className="card-header">
-                                <p className='card-title'>
-                                    <strong>
-                                        Filter Roles
-                                    </strong>
-                                </p>
-                                <div className="card-tools">
-                                    <Button text icon={` ${isCollapsFilter? 'pi pi-plus' : 'pi pi-minus' }`} onClick={toggleFilter} /> 
-                                </div>
+                    <div className={`card card-default custom-card-default ${isCollapsFilter?'collapsed-card':''}`}>
+                        <div className="card-header">
+                            <p className='card-title'>
+                                <strong>
+                                    Filter Roles
+                                </strong>
+                            </p>
+                            <div className="card-tools">
+                                <Button text icon={` ${isCollapsFilter? 'pi pi-plus' : 'pi pi-minus' }`} onClick={toggleFilter} /> 
                             </div>
+                        </div>
+                        <form 
+                            noValidate="novalidate"
+                            onSubmit={handleSubmit}
+                        > 
                             <div className="card-body">
+                                
                                 <div className="row">
                                     <div className="form-group col-md-4">
-                                        <FloatLabel>
-                                            <InputText className="form-control mt-2" id="username" value={value} onChange={(e) => setValue(e.target.value)} />
-                                            <label htmlFor="username" className='custom_label'>Username</label>
-                                        </FloatLabel>
+                                        <TextBoxFloating 
+                                            typeValue="text"
+                                            labelValue='Name'
+                                            idValue='name'
+                                            classValue=''
+                                            nameValue='name' 
+                                            requiredValue={true}
+                                            errorsValue={validationErrors}
+                                            formDataValue={formData}
+                                            onChangeValue={handleChange}
+                                            placeholderValue=''
+                                            value={name}
+                                        />
                                     </div>
                                     <div className="form-group col-md-4">
-                                        <FloatLabel>
-                                            <InputText className="form-control mt-2" id="username" value={value} onChange={(e) => setValue(e.target.value)} />
-                                            <label htmlFor="username" className='custom_label'>Username1</label>
-                                        </FloatLabel>
+                                        <TextBoxFloating 
+                                            typeValue="text"
+                                            labelValue='Username'
+                                            idValue='username'
+                                            classValue=''
+                                            nameValue='username' 
+                                            requiredValue={true}
+                                            errorsValue={validationErrors}
+                                            formDataValue={formData}
+                                            onChangeValue={() => handleChange('test')}
+                                            placeholderValue=''
+                                            value={username}
+                                        />
                                     </div>
                                     <div className="form-group col-md-4">
-                                        <div className="floating-label-select">
-                                            <label className={`floating-label ${isFocused || selectedOption ? 'focused' : ''}`}>
-                                                Select an option
-                                            </label>
-                                            <Select className="mt-2"
-                                                defaultValue={selectedOption}
-                                                onChange={handleChange}
-                                                options={options}
-                                                components={animatedComponents}
-                                                menuPortalTarget={document.body} 
-                                                isDisabled={isDisabled}
-                                                isLoading={isLoading}
-                                                isClearable={isClearable}
-                                                isRtl={isRtl}
-                                                isSearchable={isSearchable}
-                                                isMulti={true}
-                                            />
-                                        </div>
+                                        <SelectBoxComponent 
+                                            options={options} 
+                                            labelValue='test test' 
+                                            isMulti={false} 
+                                            isLoading={true} 
+                                            idValue='test'
+                                            classValue=''
+                                            nameValue='test' 
+                                            requiredValue={true}
+                                            value={test}
+                                            defaultOption={options.find(item => 2 === item.value) }
+                                            onChangeValue={handleSelectChange}
+                                            errorsValue={validationErrors}
+                                            formDataValue={formData}
+                                        />
                                     </div>
                                 </div>
                                 
-                                    
-
                             </div>
                             <div className="card-footer" style={{textAlign:'right'}}>
                                 <Button label="Reset" severity="warning" rounded icon="pi pi-times" loading={loading} onClick={load} /> 
                                 &nbsp;
-                                <Button label="Submit" severity="success" rounded icon="pi pi-check" loading={loading} onClick={load} /> 
+                                <Button type="submit" label="Submit" severity="success" rounded icon="pi pi-check" loading={loading} /> 
                                 
                             </div>
-                        </div>
+                        </form>
+                    </div>
                 </section>
+                {/* end filter  */}
 
-
+                {/* start main section */}
                 <section className="content">
                     <div className="container-fluid">
                         <div className='row'>
@@ -505,6 +256,7 @@ const Test = () => {
                         
                     </div>
                 </section>
+                {/* end main section */}
             </div>
         </>
     )
