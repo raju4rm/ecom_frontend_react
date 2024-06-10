@@ -8,6 +8,10 @@ import Login from '../components/authentication/Login';
 import AuthLayout from '../components/layout/Auth';
 import MainLayout from '../components/layout/Main';
 
+import RoleAdd from '../components/role/Add'
+import RoleList from '../components/role/List'
+import RoleEdit from '../components/role/Edit'
+
 import Test from '../components/test/Test'
 // import ForgotPassword from '../components/authentication/ForgotPassword';
 
@@ -28,6 +32,12 @@ const Backend = () => {
             <Route path="/home2" element={<Home2 />} />
 
             <Route path="/test" element={<Test />} />
+
+            {/* Role start */}
+            <Route path="/role" element={<RoleList />} />
+            <Route path="/role/add" element={<RoleAdd />} />
+            <Route path="/role/edit/:id" element={<RoleEdit />} />
+            {/* Role end */}
         </Route>
       </Routes>
     </Router>

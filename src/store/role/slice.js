@@ -71,7 +71,7 @@ const slice = createSlice({
       state.success   = false
       state.item      = {}
       state.errors    = null
-  },
+    },
   },
 });
 

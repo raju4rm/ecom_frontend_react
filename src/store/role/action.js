@@ -74,6 +74,7 @@ export const searchItem = (payload) => async (dispatch) => {
     const per_page  = 10
     let baseUrl     = `admin/role?search=1&page=${page}&per_page=${per_page}`
     const name      =  payload.name
+    //console.log(payload)
     if(name) { baseUrl = `${baseUrl}&name=${name}` }
     
     const {data} = await axios.get(baseUrl);  

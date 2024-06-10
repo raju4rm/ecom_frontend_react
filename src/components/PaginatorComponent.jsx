@@ -21,12 +21,12 @@ import { classNames } from 'primereact/utils';
 
 const Pagiationcomp= ({ totalRecords })=> {
     const dispatch = useDispatch();
-    const [params, setParams] = useState({ page: 1, limit: 2 });
+    const [params, setParams] = useState({ page: 1, limit: 10 });
     let {limitPerPage,pageNo} = useSelector((state) => state.pagination);
     let [newPageNo,setNewPageNo] = useState(pageNo)
    
     const [first, setFirst] = useState([0, 0, 0]);
-    const [rows, setRows] = useState([2, 2, 10]);
+    const [rows, setRows] = useState([10, 10, 10]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pageInputTooltip, setPageInputTooltip] = useState("Press 'Enter' key to go to this page.");
@@ -74,7 +74,6 @@ const Pagiationcomp= ({ totalRecords })=> {
                 setPageInputTooltip("Press 'Enter' key to go to this page.");
             }
             setNewPageNo(page);
-            console.log(pageNo,787)
         }
     };
 
@@ -119,7 +118,6 @@ const Pagiationcomp= ({ totalRecords })=> {
         },
         RowsPerPageDropdown: (options) => {
             const dropdownOptions = [
-                { label: 2, value: 2 },
                 { label: 10, value: 10 },
                 { label: 20, value: 20 },
                 { label: 30, value: 30 },

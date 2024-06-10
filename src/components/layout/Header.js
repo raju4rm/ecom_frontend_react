@@ -139,7 +139,7 @@ const Header = () => {
           
           <li className="nav-item dropdown user-profile" style={{backgroundColor:"#007bff",borderRadius: "5px"}} onClick={() => headerMenuToggle('user-profile')}>
             <Link className="nav-link" data-toggle="dropdown" >
-            <img src="img/user2-160x160.jpg" className="img-circle elevation-2 user-panel" alt="User Image" style={{width: "28px",marginRight: "12px",marginTop:"-5px"}}/>
+            <img src="/img/user2-160x160.jpg" className="img-circle elevation-2 user-panel" alt="User Image" style={{width: "28px",marginRight: "12px",marginTop:"-5px"}}/>
             <span className="hidden-xs">Alexander Pierce</span>
             </Link>
             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right user-profile">

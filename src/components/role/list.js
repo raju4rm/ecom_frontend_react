@@ -1,306 +1,68 @@
-import React,{ useState }  from 'react'
+import React,{ useCallback, useEffect, useState ,useRef }  from 'react'
 import { Link } from 'react-router-dom';
+
 import { Button } from 'primereact/button';
 
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/nano/theme.css';
+import 'primeicons/primeicons.css';
+import { Tag } from 'primereact/tag';
+import { InputText } from "primereact/inputtext";
+import { FloatLabel } from "primereact/floatlabel";
 
-const List = () => {
-    const customers=[
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt1',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-        {
-            id: 1000,
-            name: 'James Butt',
-            country:'Algeria',
-            company: 'Benton, John B Jr',
-            date: '2015-09-13',
-            status: 'unqualified',
-            verified: true,
-            activity: 17,
-            representative: 'ionibowcher.png'
-            
-        },
-    ]
+import { getList, searchItem } from '../../store/role/action'
+import { useDispatch, useSelector } from 'react-redux';
+import PaginatorComponent from '../PaginatorComponent';
+import BreadCrumbComponent from '../BreadCrumbComponent';
+import SelectBoxComponent from '../SelectBoxComponent';
+import TextBoxFloating from '../TextBoxFloating';
+import { Toast } from 'primereact/toast';
+import {clearState} from '../../store/role/slice'
 
+export default function List(){
+    const module = 'Role';
+    const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
+    const [formData, setFormData]                   = useState({name:"", slug:"", is_active:""}); 
+    const {name, slug, is_active} = formData;
+    const toast = useRef(null);
+
+    
+    // On change update value
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+    
+    const handleSelectChange = (selectedOption, fieldName) => {
+        let value;
+        if(selectedOption){
+            value=selectedOption.value;
+        }else{
+            value='';
+        }
+        setFormData({
+            ...formData,
+            [fieldName.name]:  value ,
+        });
+    };
+    //Call get api
+
+    
+
+    
+    /* start filter */
+    const [isCollapsFilter,setIsCollapsFilter]= useState(true);
+    const toggleFilter = () => {
+        setIsCollapsFilter(!isCollapsFilter);
+    }
+
+    // loading button start
     const [loading, setLoading] = useState(false);
-
     const load = () => {
         setLoading(true);
 
@@ -308,159 +70,226 @@ const List = () => {
             setLoading(false);
         }, 2000);
     };
+    //loading button end 
+
+    const handleSubmit = async (e) => { 
+        console.log('d')
+        e.preventDefault();
+        const error =   !name;
+        if (error) {
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
+        } else {
+            await dispatch(searchItem(formData))
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
+        } 
+    };
+    /* end filter */
+
+    /* start breadCrumb value */
+    const BreadCrumbValue = [
+        {
+            label: 'Role',
+        },
+        {
+            label: 'List',
+        },
+    ]
+    
+    /* end breadCrumb value */
+
+    // select start
+
+    const options = [
+        { value: 'y', label: 'Active' },
+        { value: 'n', label: 'In-Active' },
+    ];
+
+    // select end
+
+    const dispatch = useDispatch();
+    const [data, setData] = useState([]);
+    const [totalRecords, setTotalRecords] = useState(0);
+   
+
+    const states = useSelector((state) => state.role);
+    const { limitPerPage, pageNo } = useSelector((state) => state.pagination);
+
+    const getItemList = () => {
+        dispatch(getList({  limitPerPage, pageNo }))
+    }
+
+    useEffect(() => {
+        getItemList()
+
+    }, [limitPerPage, pageNo]);
+
+    const { success, summary, severity, message,items,totalCount } = states
+    useEffect(() => {
+        if (items) { setData(items) }
+        if (totalCount) { setTotalRecords(totalCount) }
+        if (message) { 
+            toast.current.show({ severity: severity, summary: summary, detail: message, life: 3000 }); 
+            dispatch(clearState());
+        }
+    }, [success, items, totalCount]);
+       
+
+    /* status label start */
+    const statusBodyTemplate = (items) => {
+        return <Tag value={getStatusText(items.is_active)} severity={getSeverity(items)}></Tag>;
+    }
+
+    const getStatusText = (status) => {
+        switch (status) {
+            case 'y':
+                return 'Active';
+            case 'n':
+                return 'In-Active';
+            default:
+                return '';
+        }
+    };
+    const getSeverity = (items) => {
+        switch (items.is_active) {
+            case 'y':
+                return 'success';
+            case 'n':
+                return 'danger';
+            default:
+                return null;
+        }
+    };
+    /* status label end */
+
+
+    const actionBodyTemplate = (items) => {
+        return (
+            <Link to={`/role/edit/${items.role_id}`} className="p-button " > <span className="pi pi-pencil"></span> </Link>
+        );
+    };
+
+    const onEdit = (rowData) => {
+        console.log('Edit action clicked for:', rowData);
+    };
     return ( 
         <>
             <div className="content-wrapper">
-                <section className="content-header">
-                    <div className="container-fluid ">
-                        <div className="row mb-2">
-                        <div className="col-sm-6">
-                            <h1>General Form</h1>
+                <Toast ref={toast} />
+            
+                <BreadCrumbComponent BreadCrumbValue={BreadCrumbValue} module={module}/>
+
+                {/* start filter  */}
+                <section className="content">
+                    <div className={`card card-default custom-card-default ${isCollapsFilter?'collapsed-card':''}`}>
+                        <div className="card-header">
+                            <p className='card-title'>
+                                <strong>
+                                    Filter {module}
+                                </strong>
+                            </p>
+                            <div className="card-tools">
+                                <Button text icon={` ${isCollapsFilter? 'pi pi-plus' : 'pi pi-minus' }`} onClick={toggleFilter} /> 
+                            </div>
                         </div>
-                        <div className="col-sm-6">
-                            <ol className="breadcrumb float-sm-right">
-                            <li className="breadcrumb-item">
-                            <Link to="/login"  > Contact us </Link> 
-        
-                            </li>
-                            <li className="breadcrumb-item active">General Form</li>
-                            </ol>
-                        </div>
-                        </div>
+                        <form 
+                            noValidate="novalidate"
+                            onSubmit={handleSubmit}
+                        > 
+                            <div className="card-body">
+                                
+                                <div className="row">
+                                    <div className="form-group col-md-4">
+                                        <TextBoxFloating 
+                                            typeValue="text"
+                                            labelValue='Name'
+                                            idValue='name'
+                                            classValue=''
+                                            nameValue='name' 
+                                            requiredValue={false}
+                                            errorsValue={validationErrors}
+                                            formDataValue={formData}
+                                            onChangeValue={handleChange}
+                                            placeholderValue=''
+                                            value={name}
+                                        />
+                                    </div>
+                                    <div className="form-group col-md-4">
+                                        <TextBoxFloating 
+                                            typeValue="text"
+                                            labelValue='Slug'
+                                            idValue='slug'
+                                            classValue=''
+                                            nameValue='slug' 
+                                            requiredValue={false}
+                                            errorsValue={validationErrors}
+                                            formDataValue={formData}
+                                            onChangeValue={handleChange}
+                                            placeholderValue=''
+                                            value={slug}
+                                        />
+                                    </div>
+                                    <div className="form-group col-md-4">
+                                        <SelectBoxComponent 
+                                            options={options} 
+                                            labelValue='Status' 
+                                            isMulti={false} 
+                                            isLoading={true} 
+                                            idValue='is_active'
+                                            classValue=''
+                                            nameValue='is_active' 
+                                            requiredValue={false}
+                                            value={is_active}
+                                            defaultOption={options.find(item => 2 === item.value) }
+                                            onChangeValue={handleSelectChange}
+                                            errorsValue={validationErrors}
+                                            formDataValue={formData}
+                                        />
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div className="card-footer" style={{textAlign:'right'}}>
+                                <Button label="Reset" severity="secondary" rounded icon="pi pi-undo" loading={loading} onClick={load} /> 
+                                &nbsp;
+                                <Button type="submit" label="Filter"  rounded icon="pi pi-filter-fill" loading={loading} /> 
+                                
+                            </div>
+                        </form>
                     </div>
                 </section>
+                {/* end filter  */}
 
-                <section className="content">
-                        <div className="card card-default custom-card-default">
-                            <div className="card-header">
-                                <p className='card-title'>
-                                    <strong>
-                                        Filter Roles
-                                    </strong>
-                                </p>
-                                <div className="card-tools">
-                                <button
-                                    type="button"
-                                    className="btn btn-tool"
-                                    data-card-widget="collapse"
-                                >
-                                    <i className="fas fa-minus" />
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-tool"
-                                    data-card-widget="remove"
-                                >
-                                    <i className="fas fa-times" />
-                                </button>
-                                </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="row">
-                                    <div className="form-group col-md-6">
-                                        <label>Minimal</label>
-                                        <select
-                                            className="form-control select2"
-                                            style={{ width: "100%" }}
-                                        >
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6">
-                                        <label>Minimal</label>
-                                        <select
-                                            className="form-control select2"
-                                            style={{ width: "100%" }}
-                                        >
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="form-group col-md-6">
-                                        <label>Minimal</label>
-                                        <select
-                                            className="form-control select2"
-                                            style={{ width: "100%" }}
-                                        >
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6">
-                                        <label>Minimal</label>
-                                        <select
-                                            className="form-control select2"
-                                            style={{ width: "100%" }}
-                                        >
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="card-footer">
-                                    <Button label="Primary" rounded />
-                                    <Button label="Submit" icon="pi pi-check" loading={loading} onClick={load} />
-
-
-                            </div>
-                        </div>
-                </section>
-
-
+                {/* start main section */}
                 <section className="content">
                     <div className="container-fluid">
                         <div className='row'>
                             <div className='col-12'>
                                 <div className='card custom-card'>
-                                    <div class="card-header">
+                                    <div className="card-header">
                                         <p className='card-title'>
                                             <strong>
-                                                Roles
+                                                {module}
                                             </strong>
                                         </p>
-                                        
+                                        <Link to="/role/add" className="p-button p-component p-button-rounded p-button-success" style={{float:'right'}} > <span className="pi pi-plus"></span> Add New</Link>
                                     </div>
+
                                     <div className='card-body'>
                                         <div className='row'>
                                             <div className='col-sm-12'>
-                                                <DataTable value={customers} paginator sortMode="multiple" rows={15} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} scrollable scrollHeight="400px"
-                                                    paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-                                                    currentPageReportTemplate="{first} to {last} of {totalRecords}" stripedRows>
+                                                <DataTable value={data}  sortMode="multiple"  tableStyle={{ minWidth: '50rem' }} scrollable scrollHeight="400px"
+                                                    stripedRows>
+                                                    <Column body={actionBodyTemplate} header="Actions" />
+                                                    <Column header="Status" body={statusBodyTemplate}></Column>
+
                                                     <Column sortable field="name" header="Name" style={{ width: '25%' }}></Column>
-                                                    <Column field="country" header="Country" style={{ width: '25%' }}></Column>
-                                                    <Column field="company" header="Company" style={{ width: '25%' }}></Column>
-                                                    <Column field="representative" header="Representative" style={{ width: '25%' }}></Column>
-                                                    <Column field="representative" header="Representative" style={{ width: '25%' }}></Column>
-                                                    <Column field="representative" header="Representative" style={{ width: '25%' }}></Column>
-                                                    <Column field="representative" header="Representative" style={{ width: '25%' }}></Column>
-                                                    <Column field="representative" header="Representative" style={{ width: '25%' }}></Column>
-                                                    <Column field="representative" header="Representative" style={{ width: '25%' }}></Column>
-                                                    <Column field="representative" header="Representative" style={{ width: '25%' }}></Column>
+                                                    <Column field="slug" header="Slug" style={{ width: '25%' }}></Column>
+
+                    
                                                 </DataTable>
+
+                                                <PaginatorComponent totalRecords={totalRecords} />
+
                                             </div>
                                         </div>
                                     </div>
@@ -470,9 +299,9 @@ const List = () => {
                         
                     </div>
                 </section>
+                {/* end main section */}
             </div>
         </>
     )
 }
 
-export default list

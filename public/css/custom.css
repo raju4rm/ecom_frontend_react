@@ -136,6 +136,23 @@ table.p-datatable-table {
     background-color: #46ed01f2;
     border-top-right-radius: 50px; 
     border-bottom-right-radius: 50px; 
+    border-top-left-radius: 50px; 
+    border-bottom-left-radius: 50px; 
+    
  }
+ .custom_module_head{
+   padding-left: 18px;
+   padding-top: 3px;
+ }
+ .active_breadcrumb{
+   color: #46ed01f2;
+   
+}
+ /* .active_breadcrumb:hover {
+   color: #46ed01f2;
 
- 
+} */
+
+a.p-button.p-component.p-button-rounded.p-button-success {
+   background-color:;
+ }
