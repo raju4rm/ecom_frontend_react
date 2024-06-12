@@ -27,6 +27,10 @@ export default function List(){
     const [formData, setFormData]                   = useState({name:"", slug:"", is_active:""}); 
     const {name, slug, is_active} = formData;
     const toast = useRef(null);
+    const [isFocused, setIsFocused] = useState(false);
+    const [reset, setReset] = useState(false);
+    const [loadingButton, setLoadingButton] = useState('');
+
 
     
     // On change update value
@@ -41,8 +45,10 @@ export default function List(){
     const handleSelectChange = (selectedOption, fieldName) => {
         let value;
         if(selectedOption){
+            setIsFocused(true);
             value=selectedOption.value;
         }else{
+            setIsFocused(false);
             value='';
         }
         setFormData({
@@ -62,26 +68,21 @@ export default function List(){
     }
 
     // loading button start
-    const [loading, setLoading] = useState(false);
-    const load = () => {
-        setLoading(true);
-
-        setTimeout(() => {
-            setLoading(false);
-        }, 2000);
+    const resetFilter = () => {
+        setFormData({name:"", slug:"", is_active:''}); 
+        setReset(true)
+        getItemList()
+        setLoadingButton('reset');        
     };
+
     //loading button end 
 
     const handleSubmit = async (e) => { 
-        console.log('d')
         e.preventDefault();
-        const error =   !name;
-        if (error) {
-            setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
-        } else {
-            await dispatch(searchItem(formData))
-            setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
-        } 
+        await dispatch(searchItem(formData))
+        setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
+        setLoadingButton('filter');
+
     };
     /* end filter */
 
@@ -100,6 +101,7 @@ export default function List(){
     // select start
 
     const options = [
+        { value: '', label: 'Select Status' },
         { value: 'y', label: 'Active' },
         { value: 'n', label: 'In-Active' },
     ];
@@ -123,7 +125,7 @@ export default function List(){
 
     }, [limitPerPage, pageNo]);
 
-    const { success, summary, severity, message,items,totalCount } = states
+    const { success, summary, severity, message,items,totalCount,loading } = states
     useEffect(() => {
         if (items) { setData(items) }
         if (totalCount) { setTotalRecords(totalCount) }
@@ -230,7 +232,7 @@ export default function List(){
                                     </div>
                                     <div className="form-group col-md-4">
                                         <SelectBoxComponent 
-                                            options={options} 
+                                            optionsValue={options} 
                                             labelValue='Status' 
                                             isMulti={false} 
                                             isLoading={true} 
@@ -239,19 +241,34 @@ export default function List(){
                                             nameValue='is_active' 
                                             requiredValue={false}
                                             value={is_active}
-                                            defaultOption={options.find(item => 2 === item.value) }
+                                            defaultOptionValue={options.find(item => formData.is_active === item.value) }
                                             onChangeValue={handleSelectChange}
                                             errorsValue={validationErrors}
                                             formDataValue={formData}
+                                            isFocusedValue={isFocused}
+                                            resetValue={reset}
                                         />
                                     </div>
                                 </div>
                                 
                             </div>
                             <div className="card-footer" style={{textAlign:'right'}}>
-                                <Button label="Reset" severity="secondary" rounded icon="pi pi-undo" loading={loading} onClick={load} /> 
+                                <Button 
+                                    label="Reset" 
+                                    severity="secondary" 
+                                    rounded 
+                                    icon="pi pi-undo" 
+                                    loading={loadingButton === 'reset' && loading} 
+                                    onClick={resetFilter} 
+                                /> 
                                 &nbsp;
-                                <Button type="submit" label="Filter"  rounded icon="pi pi-filter-fill" loading={loading} /> 
+                                <Button 
+                                    type="submit" 
+                                    label="Filter" 
+                                    rounded 
+                                    icon="pi pi-filter-fill" 
+                                    loading={loadingButton === 'filter' && loading} 
+                                /> 
                                 
                             </div>
                         </form>

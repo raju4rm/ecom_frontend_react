@@ -2,7 +2,7 @@ import React,{ useEffect, useState }  from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 function SelectBoxComponent({
-    options,
+    optionsValue,
     labelValue,
     isMulti,
     isLoadingProp,
@@ -10,35 +10,40 @@ function SelectBoxComponent({
     classValue,
     nameValue, 
     requiredValue,
-    defaultOption,
+    defaultOptionValue,
     formDataValue,
     errorsValue,
-    onChangeValue
+    onChangeValue,
+    isFocusedValue,
+    resetValue
 }) {
     const animatedComponents = makeAnimated();
     
-    const [isFocused, setIsFocused] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState(defaultOptionValue);
     const [isClearable, setIsClearable] = useState(true);
     const [isSearchable, setIsSearchable] = useState(true);
     const [isDisabled, setIsDisabled] = useState(false);
     const [isLoading, setIsLoading] = useState(isLoadingProp);
     const [isRtl, setIsRtl] = useState(false);
-    const handleChange = (option) => setSelectedOption(option);
+    const [defaultOptionValueSate, setDefaultOptionValueSate] = useState(defaultOptionValue);
+    useEffect(() => {
+        setSelectedOption(defaultOptionValue);
+    }, [resetValue, defaultOptionValue]);
+
     
     return (
         <>
             <div className="floating-label-select">
-                <label className={`floating-label ${isFocused || selectedOption || defaultOption? 'focused' : ''}`}>
+                <label className={`floating-label ${isFocusedValue || selectedOption || defaultOptionValueSate? 'focused' : ''}`}>
                     {labelValue} {requiredValue?(<span className='text-danger ' style={{ fontSize: 17, fontWeight: 'bold !important' }}>*</span>):''}
                 </label>
                 <Select className={`mt-2 ${classValue}`} 
                     id={idValue} 
-                    defaultValue={defaultOption}
+                    value={selectedOption}
                     name={nameValue}
                     required={requiredValue}
                     onChange={onChangeValue}
-                    options={options}
+                    options={optionsValue}
                     components={animatedComponents}
                     menuPortalTarget={document.body} 
                     isDisabled={isDisabled}
