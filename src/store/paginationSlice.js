@@ -8,7 +8,6 @@ const paginationSlice = createSlice({
 },
   reducers: {   
     setPaginationData:(state,data)=>{ 
-        console.log(data.payload,"payloads")
       state.pageNo               = data.payload.page
       state.limitPerPage         = data.payload.limit 
     }

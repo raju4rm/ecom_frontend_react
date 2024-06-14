@@ -5,24 +5,26 @@ import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/nano/theme.css';
 import 'primeicons/primeicons.css';
 
-import { getList } from '../../store/role/action'
+import { getEdit, setEdit } from '../../store/role/action'
 import { useDispatch, useSelector } from 'react-redux';
 import BreadCrumbComponent from '../BreadCrumbComponent';
 import TextBoxFloating from '../TextBoxFloating';
-import { setAdd } from '../../store/role/action';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
+import SelectBoxComponent from '../SelectBoxComponent';
 
 
-export default function Edit(){
-    
+export default function Edit(props){
+    const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const module = 'Add Role';
+    const module = 'Edit Role';
     const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
-    const [formData, setFormData]                   = useState({name:""}); 
-    const {name} = formData;
+    const [formData, setFormData]                   = useState({name:"", is_active:""}); 
+    const {name,is_active} = formData;
     const states                                    = useSelector((state) => state.role); 
-    const {loading,errors,success} = states 
+    const {loading,errors,success,item} = states 
+    const [isFocused, setIsFocused] = useState(false);
+    const [reset, setReset] = useState(false);
 
     // On change update value
     const handleChange = (e) => {
@@ -36,11 +38,11 @@ export default function Edit(){
     //Call get api
     const handleSubmit = async (e) => { 
         e.preventDefault();
-        const error =   !name;
+        const error =   !name || !is_active;
         if (error) {
             setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
         } else {
-            await dispatch(setAdd(formData))
+            await dispatch(setEdit(formData))
             setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
         } 
     };
@@ -62,7 +64,7 @@ export default function Edit(){
             label: 'Role',
         },
         {
-            label: 'Add Role',
+            label: 'Edit Role',
         },
     ]
     
@@ -78,6 +80,47 @@ export default function Edit(){
         }
     }, [errors,success]);  
     
+
+    //Call get api
+    useEffect(() => {  
+        if(id){ 
+            dispatch(getEdit(id)); 
+        }  
+    }, []);
+
+    useEffect(() => { 
+        if(item) { setFormData({
+            name: item.name !== undefined ? item.name : "", 
+            is_active: item.is_active !== undefined ? item.is_active : "",
+            role_id: item.role_id !== undefined ? item.role_id : null,
+
+        }); }  
+        if(errors) { setFormData((prevState) => ({ ...prevState, seterror:errors }));  }  
+    }, [errors,success,item]);
+
+    // select start
+
+    const options = [
+        { value: '', label: 'Select Status' },
+        { value: 'y', label: 'Active' },
+        { value: 'n', label: 'In-Active' },
+    ];
+
+    // select end
+    const handleSelectChange = (selectedOption, fieldName) => {
+        let value;
+        if(selectedOption){
+            setIsFocused(true);
+            value=selectedOption.value;
+        }else{
+            setIsFocused(false);
+            value='';
+        }
+        setFormData({
+            ...formData,
+            [fieldName.name]:  value ,
+        });
+    };
     return ( 
         <>
             <div className="content-wrapper">
@@ -116,6 +159,25 @@ export default function Edit(){
                                                         onChangeValue={handleChange}
                                                         placeholderValue=''
                                                         value={name}
+                                                    />
+                                                </div>
+                                                <div className="form-group col-md-4">
+                                                    <SelectBoxComponent 
+                                                        optionsValue={options} 
+                                                        labelValue='Status' 
+                                                        isMulti={false} 
+                                                        isLoading={true} 
+                                                        idValue='is_active'
+                                                        classValue=''
+                                                        nameValue='is_active' 
+                                                        requiredValue={true}
+                                                        value={is_active}
+                                                        defaultOptionValue={options.find(item => formData.is_active === item.value) }
+                                                        onChangeValue={handleSelectChange}
+                                                        errorsValue={validationErrors}
+                                                        formDataValue={formData}
+                                                        isFocusedValue={isFocused}
+                                                        resetValue={reset}
                                                     />
                                                 </div>
                                                 

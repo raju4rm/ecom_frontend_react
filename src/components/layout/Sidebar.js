@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {menuList} from '../../utils/menu';
 import config from '../../utils/config'
 
 const Sidebar = () => {
+  const location = useLocation();
   const [isMenuOpen,setIsMenuOpen]=useState(false);
   const [menuOpenId,setMenuOpenId]=useState('');
   const [isSubMenuOpen,setIsSubMenuOpen]=useState(false);
@@ -17,7 +18,9 @@ const Sidebar = () => {
     setIsSubMenuOpen(!isSubMenuOpen)
     setMenuSubOpenId(id)
   }
-
+  
+    console.log(location.pathname)
+  
   useEffect(() => {
     if(menuOpenId){
       var element = document.getElementById(menuOpenId);      
@@ -75,101 +78,45 @@ const Sidebar = () => {
               role="menu"
               data-accordion="false"
             >
-              {/* <li className="nav-header">MULTI LEVEL EXAMPLE</li>
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  <i className="fas fa-circle nav-icon" />
-                  <p>Level 1</p>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  <i className="nav-icon fas fa-circle" />
-                  <p>
-                    Level 1
-                    <i className="right fas fa-angle-left" />
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <a href="#" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                      <p>Level 2</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="#" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                      <p>
-                        Level 2
-                        <i className="right fas fa-angle-left" />
-                      </p>
-                    </a>
-                    <ul className="nav nav-treeview">
-                      <li className="nav-item">
-                        <a href="#" className="nav-link">
-                          <i className="far fa-dot-circle nav-icon" />
-                          <p>Level 3</p>
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a href="#" className="nav-link">
-                          <i className="far fa-dot-circle nav-icon" />
-                          <p>Level 3</p>
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a href="#" className="nav-link">
-                          <i className="far fa-dot-circle nav-icon" />
-                          <p>Level 3</p>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="nav-item">
-                    <a href="#" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                      <p>Level 2</p>
-                    </a>
-                  </li>
-                </ul>
-              </li> */}
+              
               {menuList.map(eachMenu => (
                 <React.Fragment key={eachMenu.id}>
                   {eachMenu.label != null && eachMenu.label !== '' && (
                     <li className="nav-header" key={eachMenu.id + '-label'}>{eachMenu.label}</li>
                   )}                    
                   <li className="nav-item" id={eachMenu.id} key={eachMenu.id}>
-                    <a href={eachMenu.url} className="nav-link" onClick={() => menuToggle(eachMenu.id)}>
-                      <i className="nav-icon fas fa-circle" />
+                    <Link to={eachMenu.url} className={`nav-link ${location.pathname.startsWith(eachMenu.url) ? 'active' : ''}`} onClick={() => menuToggle(eachMenu.id)}>
+                      <i className={`nav-icon fa ${eachMenu.icon}`} />
                       <p>
                         {eachMenu.name}
                         {eachMenu.sub_menu != null && eachMenu.sub_menu !== '' && (
                           <i className="right fas fa-angle-left" />
                         )}
                       </p>
-                    </a>
+                    </Link>
                     {eachMenu.sub_menu != null && eachMenu.sub_menu !== '' && (
                       <ul className="nav nav-treeview">
                         {eachMenu.sub_menu.map(eachSubMenu => (
                           <li className="nav-item"  id={eachSubMenu.id} key={eachSubMenu.id}>
-                            <a href={eachSubMenu.url} className="nav-link" onClick={() => menuSubToggle(eachSubMenu.id)}>
-                              <i className="far fa-circle nav-icon" />
+                            <Link to={eachSubMenu.url} className={`nav-link ${location.pathname.startsWith(eachSubMenu.url) ? 'active' : ''}`} onClick={() => menuSubToggle(eachSubMenu.id)}>
+                              <i className={`${eachSubMenu.icon} nav-icon`} />
+
                               <p>
                                 {eachSubMenu.name}
                                 {eachSubMenu.sub_menu != null && eachSubMenu.sub_menu !== '' && (
                                   <i className="right fas fa-angle-left" />
                                 )}
                               </p>
-                            </a>
+                            </Link>
                             {eachSubMenu.sub_menu != null && eachSubMenu.sub_menu !== '' && (
                               <ul className="nav nav-treeview">
                                 {eachSubMenu.sub_menu.map(eachSubSubMenu => (
                                     <li className="nav-item" key={eachSubSubMenu.id}>
-                                      <a href={eachSubSubMenu.url} className="nav-link" id={eachSubSubMenu.id}>
-                                        <i className="far fa-dot-circle nav-icon" />
+                                      <Link to={eachSubSubMenu.url} className="nav-link" id={eachSubSubMenu.id}>
+                                        <i className={`${eachSubSubMenu.icon} nav-icon`} />
+                                        
                                         <p>{eachSubSubMenu.name}</p>
-                                      </a>
+                                      </Link>
                                     </li>
                                   )
                                 )}
