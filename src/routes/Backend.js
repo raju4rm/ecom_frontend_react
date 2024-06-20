@@ -11,6 +11,7 @@ import MainLayout from '../components/layout/Main';
 import RoleAdd from '../components/role/Add'
 import RoleList from '../components/role/List'
 import RoleEdit from '../components/role/Edit'
+import RolePermission from '../components/role/Permission'
 
 import Test from '../components/test/Test'
 // import ForgotPassword from '../components/authentication/ForgotPassword';
@@ -37,6 +38,7 @@ const Backend = () => {
             <Route path="/role" element={<RoleList />} />
             <Route path="/role/add" element={<RoleAdd />} />
             <Route path="/role/edit/:id" element={<RoleEdit />} />
+            <Route path="/role/permission/:id" element={<RolePermission />} />
             {/* Role end */}
         </Route>
       </Routes>

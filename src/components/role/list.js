@@ -8,6 +8,8 @@ import { Column } from 'primereact/column';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/nano/theme.css';
 import 'primeicons/primeicons.css';
+import { Tooltip } from 'primereact/tooltip';
+
 import { Tag } from 'primereact/tag';
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
@@ -166,13 +168,16 @@ export default function List(){
 
     const actionBodyTemplate = (items) => {
         return (
-            <Link to={`/role/edit/${items.role_id}`} className="p-button " > <span className="pi pi-pencil"></span> </Link>
+            <>
+            <Link to={`/role/edit/${items.role_id}`} className="p-button role_edit" tooltip="Save" tooltipOptions={{ position: 'bottom', mouseTrack: true, mouseTrackTop: 15 }}> <span className="pi pi-pencil"></span> </Link> &nbsp;
+            
+            <Link to={`/role/permission/${items.role_id}`} className="p-button role_permission" > <span className="pi pi-key"></span></Link>
+            </>
         );
     };
+    
 
-    const onEdit = (rowData) => {
-        console.log('Edit action clicked for:', rowData);
-    };
+    
     return ( 
         <>
             <div className="content-wrapper">
@@ -260,6 +265,7 @@ export default function List(){
                                     icon="pi pi-undo" 
                                     loading={loadingButton === 'reset' && loading} 
                                     onClick={resetFilter} 
+                                    
                                 /> 
                                 &nbsp;
                                 <Button 
@@ -304,7 +310,7 @@ export default function List(){
 
                     
                                                 </DataTable>
-
+                                                <Tooltip target=".role_edit" mouseTrack mouseTrackLeft={10} />
                                                 <PaginatorComponent totalRecords={totalRecords} />
 
                                             </div>

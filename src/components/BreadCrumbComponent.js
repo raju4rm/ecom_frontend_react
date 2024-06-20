@@ -12,7 +12,7 @@ function BreadCrumbComponent({BreadCrumbValue,module}) {
             
             item = {
                 label: value.label,
-                template: () => <Link href={`${value.template[0].link}`} className="text-primary font-semibold">{value.template[0].linkLabel}</Link>
+                template: () => <Link to={`${value.template[0].link}`} className="text-primary font-semibold">{value.template[0].linkLabel}</Link>
             }
         }else if(BreadCrumbValue.length==index+1){
             item = {
