@@ -1,5 +1,5 @@
  
-import { loadingStart, successStatus ,responseFailureStatus,failureStatus,responseData,editRecord,getAllPermission} from "./slice"
+import { loadingStart, successStatus ,responseFailureStatus,failureStatus,responseData,editRecord,getAllPermission,getAssignedermission} from "./slice"
 import axios from "../../../utils/axios";
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,7 +18,17 @@ export const getPermission = (payload) => async (dispatch) => {
   }
 };
   
-
+export const getAssignedPermission = (payload) => async (dispatch) => {    
+  try {
+    let baseUrl     = `admin/role/assigned-permission` 
+    const {data} = await axios.post(baseUrl,payload);  
+    if (data.status) {
+      dispatch(getAssignedermission(data)); 
+    }   
+  } catch (error) {  
+      dispatch(failureStatus(error));  
+  }
+};
 
 //assign permission
 export const assignPermissionAction = (payload) => async (dispatch) => {  

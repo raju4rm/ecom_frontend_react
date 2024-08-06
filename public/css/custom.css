@@ -109,7 +109,8 @@ table.p-datatable-table {
     color: #fff;
  }
  .p-paginator {
-    background-color: #eb0000;
+    background-color: #87d17c;
+    /* background-color: #eb0000; */
     border-radius: 40px;
     margin-top: 10px;;
     width: 90%;
@@ -133,7 +134,9 @@ table.p-datatable-table {
  }
 
  .custom_page_head{
-    background-color: #46ed01f2;
+    /* background-color: #46ed01f2; */
+    background-color: #212208;
+    color: #fff;
     border-top-right-radius: 50px; 
     border-bottom-right-radius: 50px; 
     border-top-left-radius: 50px; 

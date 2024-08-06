@@ -12,6 +12,7 @@ const initialState = {
     summary:'Success',
     errors: null,
     success :false,
+    assignedPermission:[],
 };
 const slice = createSlice({
  name: 'permission',
@@ -78,8 +79,13 @@ const slice = createSlice({
     state.loading   = false 
     state.items     = action.payload.data 
   },
+   getAssignedermission:(state,action)=>{
+    state.status    = false
+    state.loading   = false 
+    state.assignedPermission     = action.payload.data 
+  },
  },
 });
 
-export const { loadingStart,responseData,responseFailureStatus,failureStatus,getRecords,editRecord,successStatus ,clearState, getAllPermission } = slice.actions;
+export const { loadingStart,responseData,responseFailureStatus,failureStatus,getRecords,editRecord,successStatus ,clearState, getAllPermission, getAssignedermission } = slice.actions;
 export default slice.reducer;

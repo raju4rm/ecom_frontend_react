@@ -22,6 +22,7 @@ import SelectBoxComponent from '../SelectBoxComponent';
 import TextBoxFloating from '../TextBoxFloating';
 import { Toast } from 'primereact/toast';
 import {clearState} from '../../store/role/slice'
+import {clearState as clearPermissionState} from '../../store/backend/permission/slice'
 
 export default function List(){
     const module = 'Role';
@@ -128,6 +129,10 @@ export default function List(){
     }, [limitPerPage, pageNo]);
 
     const { success, summary, severity, message,items,totalCount,loading } = states
+    const permissionStates                          = useSelector((state) => state.permission); 
+    //const {errors,success}                    = permissionStates
+    const permissionStatesSuccess = permissionStates.success;
+    const permissionStatesMessage = permissionStates.message;
     useEffect(() => {
         if (items) { setData(items) }
         if (totalCount) { setTotalRecords(totalCount) }
@@ -135,7 +140,11 @@ export default function List(){
             toast.current.show({ severity: severity, summary: summary, detail: message, life: 3000 }); 
             dispatch(clearState());
         }
-    }, [success, items, totalCount]);
+        if(permissionStatesSuccess){
+            toast.current.show({ severity: severity, summary: summary, detail: permissionStatesMessage, life: 3000 }); 
+            dispatch(clearPermissionState());
+        }
+    }, [success, items, totalCount,permissionStatesSuccess]);
        
 
     /* status label start */

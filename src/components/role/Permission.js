@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BreadCrumbComponent from '../BreadCrumbComponent';
 import TextBoxFloating from '../TextBoxFloating';
 import { setAdd } from '../../store/role/action';
-import { getPermission, assignPermissionAction } from '../../store/backend/permission/action';
+import { getPermission, assignPermissionAction, getAssignedPermission } from '../../store/backend/permission/action';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 
 
@@ -22,37 +22,49 @@ export default function Permission(props){
     const dispatch = useDispatch();
     const module = 'Assign Permission';
     const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
-    const [formData, setFormData]                   = useState({name:""}); 
+    const [formData, setFormData]                   = useState({id:null,selectedPermission:null}); 
     const {name}                                    = formData;
-    const states                                    = useSelector((state) => state.role); 
     const permissionStates                          = useSelector((state) => state.permission); 
-    const {loading,errors,success}                  = states 
-    const {items}                                   = permissionStates
+    const {items,errors,success,assignedPermission}                    = permissionStates
+    const assignedPermissionIds = assignedPermission.map(assignedPermission => assignedPermission.permission_id);
     const [allPermission, setAllPermission]         = useState(null);
     const [selectedPermission, setSelectedPermission]               = useState([]);
 
-
+    useEffect(() => {
+        setSelectedPermission(assignedPermissionIds);
+    }, [assignedPermission]);
     // On change update value
     const handleChange = (e) => {
-        let value =e.target.value;
+        let value =Number(e.target.value);
         if (e.checked){
             setSelectedPermission((prevArray) => [...prevArray,value])
         }else{
             setSelectedPermission((prevArray) => prevArray.filter((arrayItem) => arrayItem !== value))
         }
+        setFormData({
+            role_id:id,
+            permission_id:selectedPermission
+        })
+        
     };
-
     //Call get api
     const handleSubmit = async (e) => { 
         e.preventDefault();
-        const error =   !name;
-        if (error) {
-            setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
-        } else {
+        //const error =   !name;
+        // if (error) {
+        //     setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
+        // } else {
             await dispatch(assignPermissionAction(formData))
             setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
-        } 
+        // } 
     };
+
+    useEffect(() => {
+        setFormData({
+            role_id: id,
+            permission_id: selectedPermission
+        });
+    }, [selectedPermission, id]);
 
     // loading button start
     const [buttonLoading, setLoading] = useState(false);
@@ -90,17 +102,25 @@ export default function Permission(props){
     useEffect(() => {  
         if(id){ 
             dispatch(getPermission(id));
-            //console.log(permissionStates.items); 
+            dispatch(getAssignedPermission({role_id:id}));
         }  
     }, []); 
     
     // permission list toggle start
     useEffect(() => { 
+        
         if(items) { 
            setAllPermission(items)
         }  
-        if(errors) { setFormData((prevState) => ({ ...prevState, seterror:errors }));  }  
+        if(errors) { setFormData((prevState) => ({ ...prevState, seterror:errors }));  } 
+        if(success){ 
+            setValidationErrors({ serverErrors: null, formErrors: false })
+            const decodedRedirectUrl= decodeURIComponent('/role');
+            navigate(decodedRedirectUrl)
+        }
     }, [errors,success,items]);
+
+    
 
     const [collapseState, setCollapseState] = useState({});
 
@@ -119,6 +139,7 @@ export default function Permission(props){
         });
         setCollapseState(initialCollapseState);
     }, [items]);
+    
     // permission list toggle end
     return ( 
         <>
@@ -154,19 +175,19 @@ export default function Permission(props){
                                                                     </strong>
                                                                 </p>
                                                                 <div className="card-tools">
-                                                                    <Button text icon={` ${collapseState[moduleKey] ? 'pi pi-plus' : 'pi pi-minus' }`} onClick={() => togglePermission(moduleKey)} /> 
+                                                                    <a href="#" onClick={() => togglePermission(moduleKey)} ><i className={`pi ${collapseState[moduleKey] ? 'pi-plus' : 'pi-minus'}`}></i></a> 
                                                                 </div>
                                                             </div>
                                                             
-                                                            <div className="card-body">
-                                                                <div className="row">
+                                                            <div className="card-body" key={`card-${moduleKey}`}>
+                                                                <div className="row" key={`row-${moduleKey}`}>
                                                                     {allPermission[module].map((item,index) => (
                                                                         <div className="form-group col-md-3">
                                                                             {Object.entries(item).map(([key, value], subIndex) => (
                                                                                 <div  className="flex align-items-center">
 
 
-                                                                                <Checkbox inputId={key} name="permission" value={key} onChange={(e) => handleChange(e,key)} checked={selectedPermission.includes(key)} />
+                                                                                <Checkbox inputId={key} name="permission" value={key} onChange={(e) => handleChange(e,key)} checked={selectedPermission.includes(Number(key)) }/>
 
                                                                                 
                                                                                 <label htmlFor={key} className="ml-2" style={{marginBottom:'-1px'}}>{value}</label>
