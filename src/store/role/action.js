@@ -1,5 +1,6 @@
  
 import { loadingStart, successStatus ,responseFailureStatus,failureStatus,responseData,editRecord} from "./slice"
+import { permisssionFailureStatus} from "../backend/permission/slice"
 import axios from "../../utils/axios";
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,10 +14,12 @@ export const setAdd = (payload) => async (dispatch) => {
       dispatch(successStatus(data)); 
     }   
   } catch (error) { 
-    if (error.response && error.response.status === 422) {   
-        dispatch(responseFailureStatus(error.response))
+    if (error.response && error.response.status === 422) { 
+      dispatch(responseFailureStatus(error.response))
+    } else if (error.response && error.response.status === 403) {  
+      dispatch(permisssionFailureStatus(error.response))
     } else { 
-        dispatch(failureStatus(error.message));
+      dispatch(failureStatus(error.response));
     } 
   }
 };

@@ -84,8 +84,18 @@ const slice = createSlice({
     state.loading   = false 
     state.assignedPermission     = action.payload.data 
   },
+
+  permisssionFailureStatus: (state, action) => {  
+    state.status    = true
+    state.loading   = false 
+    state.message   = action.payload.data.message 
+    state.severity  = 'error'
+    state.summary   = 'Failed'
+    state.errors    =  403 
+    state.isPermission    =  false 
+  },
  },
 });
 
-export const { loadingStart,responseData,responseFailureStatus,failureStatus,getRecords,editRecord,successStatus ,clearState, getAllPermission, getAssignedermission } = slice.actions;
+export const { loadingStart,responseData,responseFailureStatus,failureStatus,getRecords,editRecord,successStatus ,clearState, getAllPermission, getAssignedermission, permisssionFailureStatus } = slice.actions;
 export default slice.reducer;

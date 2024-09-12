@@ -13,6 +13,8 @@ import RoleList from '../components/role/List'
 import RoleEdit from '../components/role/Edit'
 import RolePermission from '../components/role/Permission'
 
+import PermissionDenied from '../components/permissionDenied'
+
 import Test from '../components/test/Test'
 // import ForgotPassword from '../components/authentication/ForgotPassword';
 
@@ -20,8 +22,9 @@ const Backend = () => {
   return (
     <Router>
       <Routes>
+        <Route exact path="/permission-denied" element={<PermissionDenied/>} />
         <Route element={<AuthLayout/>}>
-          <Route exact path="/login" element={<Login/>} />
+          <Route exact path="/login" element={<Login/>} /><Route exact path="/login" element={<Login/>} />
           {/* <Route exact path="/forgot-password" element={<ForgotPassword/>} /> */}
         </Route>
         
