@@ -19,13 +19,17 @@ import login from './login/slice';
 import role from './role/slice';
 import pagination from './paginationSlice';
 import permission from './backend/permission/slice'
+import brand from './brand/slice'
+import category from './category/slice'
 
 const rootReducer = combineReducers({
   header,
   login,
   role,
   pagination,
-  permission
+  permission,
+  brand,
+  category
 });
 
 const persistConfig = {

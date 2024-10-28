@@ -1,8 +1,12 @@
 import React ,{useEffect, useState, useRef} from 'react'
-import { Link } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
+import {logoutA} from '../../store/login/action';
+import { useDispatch, useSelector } from 'react-redux'; 
 
 const Header = () => {
   
+  const navigate = useNavigate();
+  const dispatch                  = useDispatch();
 
   const [isMenuCollapse,setIsMenuCollapse]=useState(true);
   const [isHeaderMenuOpen,setIsHeaderMenuOpen]=useState(false);
@@ -87,7 +91,10 @@ const Header = () => {
 
   },[isMenuCollapse]) // sidebar collapse toggle start
 
-
+  const logout = () => {
+    dispatch(logoutA());
+    navigate('/login')
+  };
   return (
     <nav className="main-header navbar navbar-expand navbar-white navbar-light">
         <ul className="navbar-nav">
@@ -157,7 +164,7 @@ const Header = () => {
                   <a href="#" className="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div style={{float:"right"}}>
-                  <a href="#" className="btn btn-default btn-flat">Sign out</a>
+                  <a  onClick={logout} className="btn btn-default btn-flat">Sign out</a>
                 </div>
               </div>
             </div>

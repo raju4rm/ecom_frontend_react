@@ -50,5 +50,43 @@ export const menuList=[
         active  :   'Role Management', 
         id      :   'Role_Management',
         icon    :   'fa fa-check-square',
-    }
+    },
+    {
+        name    :   'User Management',
+        url     :   '/user',
+        active  :   'User Management', 
+        id      :   'User',
+        icon    :   'fa fa-user',
+    },
+    {
+        label   :   'CONFIGURATION DATA',
+        name    :   'Master Setup',
+        url     :   '#',
+        active  :   'Master Setup',
+        id      :   'master_setup',
+        icon    :   'fa fa-cog',
+        sub_menu:   [
+            {
+                name    :   'Brand',
+                url     :   'master/brand',
+                active  :   'Brand',
+                id      :   'brand',   
+                icon    :   'fa fa-angle-double-right',
+            },
+            {
+                name    :   'Category',
+                url     :   'master/category',
+                active  :   'Category',
+                id      :   'category',   
+                icon    :   'fa fa-angle-double-right',
+            },
+            {
+                name    :   'Level sub - 2',
+                url     :   '#',
+                active  :   'Level sub - 2',
+                id      :   'LS2',  
+                icon    :   'fa fa-angle-double-right',
+            }
+        ]
+    },
 ]

@@ -1,14 +1,14 @@
  
 import { loadingStart, successStatus ,responseFailureStatus,failureStatus,responseData,editRecord} from "./slice"
-import { permisssionFailureStatus} from "../backend/permission/slice"
-import axios from "../../utils/axios";
+import { permisssionFailureStatus} from "../../backend/permission/slice"
+import axios from "../../../utils/axios";
 import { useDispatch, useSelector } from 'react-redux';
 
 //add
 export const setAdd = (payload) => async (dispatch) => {  
   dispatch(loadingStart());  
   try {  
-      const response = await axios.post('admin/role',payload); 
+      const response = await axios.post('admin/user',payload); 
       const {data} = response;
     if (data.status) {
       dispatch(successStatus(data)); 
@@ -28,7 +28,7 @@ export const setAdd = (payload) => async (dispatch) => {
 export const setEdit = (payload) => async (dispatch) => {  
   dispatch(loadingStart());  
   try {  
-      const response = await axios.put('admin/role',payload);  
+      const response = await axios.put('admin/user',payload);  
       const {data} = response;
       if (data.status) {
         dispatch(successStatus(data)); 
@@ -46,7 +46,7 @@ export const setEdit = (payload) => async (dispatch) => {
 //Get Single data
 export const getEdit = (payload) => async (dispatch) => {   
   try {  
-    let baseUrl     = `admin/role/edit/${payload}` 
+    let baseUrl     = `admin/user/edit/${payload}` 
     const {data}    = await axios.get(baseUrl);  
     if (data.status) {
       dispatch(editRecord(data)); 
@@ -59,7 +59,7 @@ export const getEdit = (payload) => async (dispatch) => {
 //Get records with pagintion
 export const getList = (payload) => async (dispatch) => {    
   try {
-    let baseUrl     = `admin/role?search=1&page=${payload.pageNo}&per_page=${payload.limitPerPage}` 
+    let baseUrl     = `admin/user?search=1&page=${payload.pageNo}&per_page=${payload.limitPerPage}` 
     const {data} = await axios.get(baseUrl);  
     if (data.status) {
       dispatch(responseData(data)); 
@@ -75,7 +75,7 @@ export const searchItem = (payload) => async (dispatch) => {
   try { 
     const page      = 1
     const per_page  = 10
-    let baseUrl     = `admin/role?search=1&page=${page}&per_page=${per_page}`
+    let baseUrl     = `admin/user?search=1&page=${page}&per_page=${per_page}`
     const name      =  payload.name
     const slug      =  payload.slug
     const isActive      =  payload.is_active
@@ -93,21 +93,5 @@ export const searchItem = (payload) => async (dispatch) => {
   }
 };
 
-//assign permission
-export const assignPermissionAction = (payload) => async (dispatch) => {  
-  dispatch(loadingStart());  
-  try {  
-    const response = await axios.post('admin/role/assign-permission',payload); 
-    const {data} = response;
-    if (data.status) {
-      dispatch(successStatus(data)); 
-    }   
-  } catch (error) { 
-    if (error.response && error.response.status === 422) {   
-        dispatch(responseFailureStatus(error.response))
-    } else { 
-        dispatch(failureStatus(error.message));
-    } 
-  }
-};
+
  
