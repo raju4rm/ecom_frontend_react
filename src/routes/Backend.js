@@ -7,6 +7,7 @@ import PermissionMiddleware from '../middleware/PermissionMiddleware';
 import Login from '../components/authentication/Login';
 import AuthLayout from '../components/layout/Auth';
 import MainLayout from '../components/layout/Main';
+import MainLayout2 from '../components/layout2/Main';
 
 import RoleAdd from '../components/role/Add'
 import RoleList from '../components/role/List'
@@ -28,6 +29,7 @@ import MasterCategoryEdit from '../components/master/category/Edit'
 import PermissionDenied from '../components/permissionDenied'
 
 import Test from '../components/test/Test'
+import TestLayout2Create from '../components/testlayout2/Add'
 // import ForgotPassword from '../components/authentication/ForgotPassword';
 
 const Backend = () => {
@@ -42,11 +44,11 @@ const Backend = () => {
         
         {/* <Route path="/" element={<AuthenticateMiddleware element={<PermissionMiddleware element={<MainLayout />} />} />}
         > */}
-        <Route path="/" element={<AuthenticateMiddleware element={<PermissionMiddleware element={<MainLayout />} />} />}
+        <Route path="/" element={<AuthenticateMiddleware element={<PermissionMiddleware element={<MainLayout2 />} />} />}
         >
           {/* <Route path="/home1" element={<Home1 />} /> */}
           <Route path="/home2" element={<Home2 />} />
-
+          <Route path="/test-layout-2" element={<TestLayout2Create />} />
           <Route path="/test" element={<Test />} />
 
           {/* Role start */}

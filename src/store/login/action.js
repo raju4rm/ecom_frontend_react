@@ -13,12 +13,12 @@ import { setCookie } from "../../utils/cookieService";
 export const login = (credentials) => async (dispatch) => { 
   dispatch(loginStart()); 
   try { 
-    const {data} = await axios.post('/admin/login', credentials); 
+    const {data} = await axios.post('/auth/sign-in', credentials); 
     if (!data.status) {
       dispatch(loginFailure('Credential required!')); 
     } 
      
-     
+    console.log(data); 
     const currentTime     = new Date(); 
     const expirationTime  = new Date(currentTime.getTime() + 5 * 60 * 60 * 1000); 
     localStorage.setItem('expireIn',expirationTime.getTime());

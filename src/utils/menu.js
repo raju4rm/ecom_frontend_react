@@ -20,6 +20,17 @@ export const menuList=[
                 active  :   'Level sub - 2',
                 id      :   'LS2',  
                 icon    :   'fa fa-angle-double-right',
+                sub_menu:   [
+                    {
+                        name    :   'Level sub sub - 2',
+                        url     :   '/test-layout-21',
+                        active  :   'Level sub sub - 2',
+                        id      :   'LSS2',
+                        icon    :   'fa fa-angle-right', 
+                        
+                    }
+
+                ] 
             },
             {
                 name    :   'Level sub - 3',
@@ -30,7 +41,7 @@ export const menuList=[
                 sub_menu:   [
                     {
                         name    :   'Level sub sub - 1',
-                        url     :   '#',
+                        url     :   '/test-layout-2',
                         active  :   'Level sub sub - 1',
                         id      :   'LSS3',
                         icon    :   'fa fa-angle-right', 
@@ -75,7 +86,7 @@ export const menuList=[
             },
             {
                 name    :   'Category',
-                url     :   'master/category',
+                url     :   '/category',
                 active  :   'Category',
                 id      :   'category',   
                 icon    :   'fa fa-angle-double-right',

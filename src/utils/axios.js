@@ -1,6 +1,6 @@
 import axios from 'axios';  
 import { getCookie} from "./cookieService";
-const BaseUrl = 'http://localhost:5000' 
+const BaseUrl = 'http://127.0.0.1:8000' 
 const instance = axios.create({ 
   baseURL: BaseUrl, 
   headers: {
