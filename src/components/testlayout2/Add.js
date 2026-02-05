@@ -1,16 +1,26 @@
 import React,{ useCallback, useEffect, useState }  from 'react'
 
-import { getList } from '../../store/role/action'
 import { useDispatch, useSelector } from 'react-redux';
 import BreadCrumbComponent from '../layout2/BreadCrumbComponent';
 import TextBox from '../layout2/formInput/TextBox';
 import SelectBox from '../layout2/formInput/SelectBox';
-import { setAdd } from '../../store/role/action';
+import { setAdd } from '../../store/testLayout2/action';
 import { useNavigate, Link } from 'react-router-dom';
 
-
 export default function Add(){
-    const module = 'Test';    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const module = 'Test'; 
+    const states = useSelector((state) => state.testLayout2);  
+    const {loading,errors,success} = states
+    const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
+    const [formData, setFormData] = useState({
+            input_box: '',
+            select_box: ''
+        });
+    const {input_box, select_box} = formData;
+    
+  
     /* start breadCrumb value */
     const BreadCrumbValue = [
         {
@@ -27,11 +37,8 @@ export default function Add(){
     ]
     /* end breadCrumb value */
 
-    const [formData, setFormData] = useState({
-        input_box: '',
-        select_box: ''
-    });
-    
+
+    // On change update value
     const handleChange = (name, value) => {
         setFormData(prev => ({
             ...prev,
@@ -39,15 +46,37 @@ export default function Add(){
         }));
     };
     
-    const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
     
-    console.log(formData);
 
     const options = [
         { value: '', label: 'Select Status' },
         { value: 'y', label: 'Active' },
         { value: 'n', label: 'In-Active' },
     ];
+
+
+    //Call get api
+    const handleSubmit = async (e) => { 
+        e.preventDefault();
+        const error =   !input_box || !select_box;
+        if (error) {
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
+            console.log(1);
+        } else {
+            await dispatch(setAdd(formData))
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
+        } 
+    };
+
+    //Set server errors
+    useEffect(() => {  
+        setValidationErrors((prevState) => ({ ...prevState, serverErrors: errors }));
+        if(success){ 
+            setValidationErrors({ serverErrors: null, formErrors: false })
+            const decodedRedirectUrl= decodeURIComponent('/role');
+            navigate(decodedRedirectUrl)
+        }
+    }, [errors,success]);
     return ( 
         <>
            {/* <main className="nxl-container"> */}
@@ -84,43 +113,48 @@ export default function Add(){
                     <div className="row">
                         <div className="col-xl-6">
                             <div className="card stretch stretch-full">
-                                <div className="card-body">
-                                    <div className="mb-4">
-                                        <TextBox 
-                                            labelValue='Test Input Box'
-                                            idValue='input_box_id'
-                                            classValue='input_box_class'
-                                            nameValue='input_box' 
-                                            requiredValue={true}
-                                            errorsValue={validationErrors}
-                                            formDataValue={formData}
-                                            onChangeValue={handleChange}
-                                            placeholderValue='Test Input Box Placeholder'
-                                        />
+                                <form 
+                                    noValidate="novalidate"
+                                    onSubmit={handleSubmit}
+                                >
+                                    <div className="card-body">
+                                        <div className="mb-4">
+                                            <TextBox 
+                                                labelValue='Test Input Box'
+                                                idValue='input_box_id'
+                                                classValue='input_box_class'
+                                                nameValue='input_box' 
+                                                isRequired={true}
+                                                errorsValue={validationErrors}
+                                                formDataValue={formData}
+                                                onChangeValue={handleChange}
+                                                placeholderValue='Test Input Box Placeholder'
+                                            />
+                                        </div>
+                                        <div className="mb-4">
+                                            <SelectBox
+                                                labelValue='Test Select Box'
+                                                optionsValue={options}
+                                                idValue="test_select_id"
+                                                classValue="test_select_class"
+                                                nameValue="select_box"
+                                                isRequired={true}
+                                                defaultOptionValue="a"
+                                                placeholderValue="Test Select Box Placeholder"
+                                                isSearchable={true}
+                                                isDisabled={false}
+                                                formDataValue={formData}
+                                                errorsValue={validationErrors}
+                                                onChangeValue={handleChange}
+                                                resetValue={false}
+                                            />
+                                        </div>
+                                        <div class="d-flex justify-content-end gap-2 mt-3">
+                                            <button id="back" class="btn btn-md bg-soft-danger text-danger">Back</button>
+                                            <button id="save" class="btn btn-md btn-primary" >Save</button>
+                                        </div>
                                     </div>
-                                    <div className="mb-4">
-                                        <SelectBox
-                                            labelValue='Test Select Box'
-                                            optionsValue={options}
-                                            idValue="test_select_id"
-                                            classValue="test_select_class"
-                                            nameValue="select_box"
-                                            requiredValue={true}
-                                            defaultOptionValue="a"
-                                            placeholderValue="Test Select Box Placeholder"
-                                            isSearchable={true}
-                                            isDisabled={false}
-                                            formDataValue={formData}
-                                            errorsValue={validationErrors}
-                                            onChangeValue={handleChange}
-                                            resetValue={false}
-                                        />
-                                    </div>
-                                    <div class="d-flex justify-content-end gap-2 mt-3">
-                                        <button id="back" class="btn btn-md bg-soft-danger text-danger">Back</button>
-                                        <button id="save" class="btn btn-md btn-primary" >Save</button>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>

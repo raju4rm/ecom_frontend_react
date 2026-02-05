@@ -21,6 +21,7 @@ import pagination from './paginationSlice';
 import permission from './backend/permission/slice'
 import brand from './brand/slice'
 import category from './category/slice'
+import testLayout2 from './testLayout2/slice'
 
 const rootReducer = combineReducers({
   header,
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
   pagination,
   permission,
   brand,
-  category
+  category,
+  testLayout2,
 });
 
 const persistConfig = {

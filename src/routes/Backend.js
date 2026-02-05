@@ -30,6 +30,7 @@ import PermissionDenied from '../components/permissionDenied'
 
 import Test from '../components/test/Test'
 import TestLayout2Create from '../components/testlayout2/Add'
+import TestLayout2List from '../components/testlayout2/List'
 // import ForgotPassword from '../components/authentication/ForgotPassword';
 
 const Backend = () => {
@@ -49,6 +50,7 @@ const Backend = () => {
           {/* <Route path="/home1" element={<Home1 />} /> */}
           <Route path="/home2" element={<Home2 />} />
           <Route path="/test-layout-2" element={<TestLayout2Create />} />
+          <Route path="/test-layout-2/list" element={<TestLayout2List />} />
           <Route path="/test" element={<Test />} />
 
           {/* Role start */}

@@ -23,22 +23,26 @@ function SelectBox({
         const [defaultOptionValueSate, setDefaultOptionValueSate] = useState(defaultOptionValue);
         
     return (
-        <Select
-            label={labelValue}    
-            data={optionsValue}
-            id={idValue}
-            classNames={{
-                input: {classValue},
-                label: 'form-label'
-            }}
-            name={nameValue}
-            required={isRequired}
-            defaultValue={defaultOptionValue}
-            placeholder={placeholderValue}            
-            searchable={isSearchable}
-            disabled={isDisabled}
-            onChange={(value) => onChangeValue(nameValue, value)}
-        />
+        <>
+            <Select
+                label={labelValue}    
+                data={optionsValue}
+                id={idValue}
+                classNames={{
+                    input: {classValue},
+                    label: 'form-label'
+                }}
+                name={nameValue}
+                required={isRequired}
+                defaultValue={defaultOptionValue}
+                placeholder={placeholderValue}            
+                searchable={isSearchable}
+                disabled={isDisabled}
+                onChange={(value) => onChangeValue(nameValue, value)}
+            />
+            {errorsValue.formErrors && isRequired && !formDataValue[nameValue] && <small id="username2-help" className="p-error block">{labelValue} field is required.</small> }
+            {errorsValue.serverErrors && isRequired && formDataValue[nameValue] && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
+        </>
     );
 }
 

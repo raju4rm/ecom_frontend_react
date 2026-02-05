@@ -5,6 +5,7 @@ import permission from './backend/permission/slice'
 import login from './login/slice'
 import role from './role/slice'
 import user from './backend/user/slice'
+import testLayout2 from './testLayout2/slice'
 
 const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
       login: login,
       role: role,
       user: user,
+      testLayout2: testLayout2,
     },
 });
   

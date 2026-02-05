@@ -8,7 +8,7 @@ function TextBox({
     idValue,
     classValue,
     nameValue,
-    requiredValue,
+    isRequired,
     placeholderValue,
     errorsValue,
     formDataValue,
@@ -28,17 +28,17 @@ function TextBox({
                     label: 'form-label'
                 }}
                 name={nameValue}
-                required={requiredValue}
+                required={isRequired}
                 placeholder={placeholderValue}
                 onChange={(e) => onChangeValue(e.target.name, e.target.value)}
                 onFocus={onFocusValue}
                 onBlur={onBlurValue} 
                 
             />
-            {errorsValue.formErrors && requiredValue && !formDataValue[nameValue] && <small id="username2-help" className="p-error block">{labelValue} field is required.</small> }
-            {errorsValue.serverErrors && requiredValue && formDataValue[nameValue] && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
+            {errorsValue.formErrors && isRequired && !formDataValue[nameValue] && <small id="username2-help" className="p-error block">{labelValue} field is required.</small> }
+            {errorsValue.serverErrors && isRequired && formDataValue[nameValue] && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
         </>
-  )
+    )
 }
 
 export default TextBox
