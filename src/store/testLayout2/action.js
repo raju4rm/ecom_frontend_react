@@ -59,7 +59,7 @@ export const getEdit = (payload) => async (dispatch) => {
 //Get records with pagintion
 export const getList = (payload) => async (dispatch) => {    
   try {
-    let baseUrl     = `admin/role?search=1&page=${payload.pageNo}&per_page=${payload.limitPerPage}` 
+    let baseUrl     = `test/test-layout-2?search=1&page=${payload.pageNo}&per_page=${payload.limitPerPage}` 
     const {data} = await axios.get(baseUrl);  
     if (data.status) {
       dispatch(responseData(data)); 

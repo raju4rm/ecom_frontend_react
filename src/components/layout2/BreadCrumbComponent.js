@@ -6,7 +6,7 @@ import config from '../../utils/config';
 function BreadCrumbComponent({BreadCrumbValue,module}) {
     document.title = module+' | '+config.siteName
     
-    console.log(BreadCrumbValue);
+    // console.log(BreadCrumbValue);
 
     return (
         <>

@@ -1,10 +1,27 @@
 import React,{ useCallback, useEffect, useState }  from 'react'
-
+import { DataTable } from 'mantine-datatable';
+import dayjs from 'dayjs';
+import employees from '../../data/employees.json';
 import BreadCrumbComponent from '../layout2/BreadCrumbComponent';
+import { useNavigate, Link } from 'react-router-dom';
+import AppDataTable from '../layout2/formInput/AppDataTable';
+import { getList } from '../../store/testLayout2/action';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function List(){
+    const dispatch = useDispatch();
     
+    const states = useSelector((state) => state.testLayout2);
+    const { limitPerPage, pageNo } = useSelector((state) => state.pagination);
+    
+    const getItemList = () => {
+        dispatch(getList({  limitPerPage, pageNo }))
+    }
+    useEffect(() => {
+        getItemList()
+
+    }, [limitPerPage, pageNo]);
     const module = 'Test'; 
   
     /* start breadCrumb value */
@@ -15,15 +32,24 @@ export default function List(){
         },
         {
             label: 'Role list',
-            link: '/role'
-        },
-        {
-            label: 'Create',
-        },
+        }
     ]
     /* end breadCrumb value */
+    const { success, summary, severity, message,items,totalCount,loading } = states
 
-
+    const [data, setData] = useState([]);
+    const [totalRecords, setTotalRecords] = useState(0);
+    useEffect(() => {
+        if (items) { setData(items) }
+        if (totalCount) { setTotalRecords(totalCount) }
+        
+    }, [success, items, totalCount]);
+          
+    const columns = [
+        { accessor: 'test_layout2_id', title: 'First Name', width: 120 },
+        { accessor: 'input_box', title: 'Last Name', width: 120 },
+        { accessor: 'select_box', title: 'Email', width: '100%' }
+    ];
     
     return ( 
         <>
@@ -40,14 +66,11 @@ export default function List(){
                                 </a>
                             </div>
                             <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                                <a href=";" className="btn btn-light-brand" data-bs-toggle="offcanvas" data-bs-target="#proposalSent">
-                                    <i className="feather-layers me-2"></i>
-                                    <span>Save & Send</span>
-                                </a>
-                                <a href=";" className="btn btn-primary successAlertMessage">
-                                    <i className="feather-save me-2"></i>
-                                    <span>Save</span>
-                                </a>
+                                
+                                <Link to="/test-layout-2" className="btn btn-primary successAlertMessage">
+                                    <i className="feather-plus me-2"></i>
+                                    <span>Add New</span>
+                                </Link>
                             </div>
                         </div>
                         <div className="d-md-none d-flex align-items-center">
@@ -59,9 +82,14 @@ export default function List(){
                 </div>
                 <div className="main-content">
                     <div className="row">
-                        <div className="col-xl-6">
+                        <div className="col-xl-12">
                             <div className="card stretch stretch-full">
-                                    ww
+                                <AppDataTable
+                                    data={data}
+                                    columns={columns}
+                                    height={300}
+                                />
+
                             </div>
                         </div>
                     </div>

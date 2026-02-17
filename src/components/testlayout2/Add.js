@@ -1,4 +1,4 @@
-import React,{ useCallback, useEffect, useState }  from 'react'
+import React,{ useCallback, useEffect, useState, useRef }  from 'react'
 
 import { useDispatch, useSelector } from 'react-redux';
 import BreadCrumbComponent from '../layout2/BreadCrumbComponent';
@@ -19,8 +19,26 @@ export default function Add(){
             select_box: ''
         });
     const {input_box, select_box} = formData;
+    // console.log('1st '+test);
+    const [test, setTest] = useState(true);
+    const refcount = useRef(true);
+
+    console.log('2nd '+test);
+
+    function toggleTest(){
+        setTest(!test);
+        refcount.current = !refcount.current;
+        console.log('inside'+test,refcount);
+    }
+    console.log('3rd '+test);
+    useEffect(() => {
+        console.log('4th '+test);
+    }, [test]);
+    console.log('5th '+test);
     
-  
+    
+
+
     /* start breadCrumb value */
     const BreadCrumbValue = [
         {
@@ -61,7 +79,7 @@ export default function Add(){
         const error =   !input_box || !select_box;
         if (error) {
             setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
-            console.log(1);
+            // console.log(1);
         } else {
             await dispatch(setAdd(formData))
             setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
@@ -92,11 +110,11 @@ export default function Add(){
                                 </a>
                             </div>
                             <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                                <a href=";" className="btn btn-light-brand" data-bs-toggle="offcanvas" data-bs-target="#proposalSent">
+                                <a href=";" className="btn btn-light-brand" data-bs-toggle="offcanvas" data-bs-target="#proposalSent" style={{display: test ? 'block' : 'none'}}>
                                     <i className="feather-layers me-2"></i>
                                     <span>Save & Send</span>
                                 </a>
-                                <a href=";" className="btn btn-primary successAlertMessage">
+                                <a onClick={toggleTest} className="btn btn-primary successAlertMessage">
                                     <i className="feather-save me-2"></i>
                                     <span>Save</span>
                                 </a>

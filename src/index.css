@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.mantine-datatable-pagination,
+.mantine-datatable-pagination * {
+  color: #f8f9fa !important;
+}
