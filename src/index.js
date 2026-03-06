@@ -12,33 +12,39 @@ import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css'; // REQUIRED
 import '@mantine/core/styles.css';
 import 'mantine-datatable/styles.css';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <MantineProvider
-          defaultColorScheme="dark"
-          theme={{
-            colors: {
-              dark: [
-                '#f8f9fa', // text color
-                '#e9ecef',
-                '#dee2e6',
-                '#ced4da',
-                '#424242', // table border color
-                '#868e96',
-                '#121a2d', // dropdown background color
-                '#1c2438', // table color & dropdown hover color
-                '#212529', // 8
-                '#16191d', // 9 (deep background)
-              ],
-            },
-            primaryColor: 'blue',
-          }}
-        >
-        <App />
-        </MantineProvider>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider
+            defaultColorScheme="dark"
+            theme={{
+              colors: {
+                dark: [
+                  '#f8f9fa', // text color
+                  '#e9ecef',
+                  '#dee2e6',
+                  '#ced4da',
+                  '#424242', // table border color
+                  '#868e96',
+                  '#121a2d', // dropdown background color
+                  '#1c2438', // table color & dropdown hover color
+                  '#212529', // 8
+                  '#16191d', // 9 (deep background)
+                ],
+              },
+              primaryColor: 'blue',
+            }}
+          >
+          <App />
+          </MantineProvider>
+        </QueryClientProvider>
       </PersistGate>
     </Provider>
   // </React.StrictMode>

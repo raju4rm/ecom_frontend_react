@@ -8,12 +8,13 @@ const initialState = {
   error           : null,
   expireTime      : null,
   refreshToken    : null ,
-  message         :'' ,
-  severity        :'success',
-  summary         :'Success',
+  message         : '' ,
+  severity        : 'success',
+  summary         : 'Success',
   seterrors       : null,
-  success         :false,
-  setError         :false,
+  success         : false,
+  setError        : false,
+  status          : null
 };
  
 const authReducer = createSlice({
@@ -24,6 +25,10 @@ const authReducer = createSlice({
         state.isLoading = true;
         state.error     = null;
       }, 
+      loadingStart: (state) => {
+        state.isLoading = true;
+        state.error     = null;
+      },
       loginSuccess: (state, action) => {
         state.success         = true;
         state.user            = action.payload;
@@ -34,7 +39,7 @@ const authReducer = createSlice({
         state.message         = 'Logged in successfully!' 
         state.severity        = 'success'
         state.summary         = 'success'
-        // state.accessToken     = action.payload.data.token
+        state.accessToken     = action.payload.data[0].token
       },
       logout: (state) => {
         state.isAuthenticated = false;
@@ -47,22 +52,22 @@ const authReducer = createSlice({
         state.status    = true
         state.isLoading = false 
         state.isAuthenticated = false;
-        state.message   = action 
+        state.message   = action.payload.message  
         state.severity  = 'error'
-        state.summary   = 'Failed'  
+        state.summary   = 'Failed' 
+        state.error =  action.payload.data.errors  
       },
       responseFailureStatus: (state, action) => {
           state.status    = true
           state.isLoading = false 
-          state.message   = action.payload.data.message 
+          state.message   = action.payload.message 
           state.severity  = 'error'
           state.summary   = 'Failed'
-          state.seterrors =  action.payload.data.errors 
+          state.error =  action.payload.data.errors 
       },
       setAccessToken: (state, action) => {
-        state.accessToken   = action.payload;
-        state.refreshToken  = action.payload;
-        state.expireTime    = action.payload;
+        state.accessToken   = action.payload.data[0].token
+        state.isAuthenticated = true
       }, 
       resetState: (state, action) => {  
         state.status    = false
@@ -74,9 +79,29 @@ const authReducer = createSlice({
         state.success   = false
         state.item      = {}
         state.seterrors    = null
-    },
+      },
+      forgotPasswordState: (state, action) => {
+        state.status    = action.payload.status
+        state.message   = action.payload.message
+        state.isLoading = false;
+      },
+      resetForgotPasswordState: (state, action) => {
+        state.status    = null
+        state.message   = null
+        state.isLoading = false;
+      },
+      resetPasswordState: (state, action) => {
+        state.status    = action.payload.status
+        state.message   = action.payload.message
+        state.isLoading = false;
+      },
+      resetResetPasswordState: (state, action) => {
+        state.status    = null
+        state.message   = null
+        state.isLoading = false;
+      }
   },
 });
 
-export const { loginSuccess, logoutSuccess ,setAccessToken ,loginFailure,loginStart,resetState,responseFailureStatus,logout} = authReducer.actions;
+export const { loginSuccess, logoutSuccess ,setAccessToken ,loginFailure,loginStart,resetState,responseFailureStatus,logout,forgotPasswordState,resetForgotPasswordState,resetPasswordState,resetResetPasswordState,loadingStart} = authReducer.actions;
 export default authReducer.reducer;

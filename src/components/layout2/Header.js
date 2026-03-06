@@ -9,6 +9,9 @@ const Header = ({ isMainMenuCollapse, setIsMainMenuCollapse, toggleSubMenu }) =>
         return localStorage.getItem('theme') === 'dark';
     });
     const [isFullScreen,setIsFullScreen] = useState(false)
+    const dispatch                  = useDispatch();
+    const navigate = useNavigate();
+
 
     const toggleMenuCollapse = () => {
         const newCollapseState = !isMainMenuCollapse; // compute next state
@@ -50,9 +53,12 @@ const Header = ({ isMainMenuCollapse, setIsMainMenuCollapse, toggleSubMenu }) =>
         }
     }
 
+    const handleLogout = async () => {
+        await dispatch(logoutA());
+        navigate("/login", { replace: true });
+    };
   return (
     <>
-    
         <header className="nxl-header">
             <div className="header-wrapper">
             <div className="header-left d-flex align-items-center gap-4">
@@ -195,7 +201,7 @@ const Header = ({ isMainMenuCollapse, setIsMainMenuCollapse, toggleSubMenu }) =>
                             </a>
                             
                             <div className="dropdown-divider"></div>
-                            <a href="./auth-login-minimal.html" className="dropdown-item">
+                            <a href="#" className="dropdown-item" onClick={handleLogout}>
                                 <i className="feather-log-out"></i>
                                 <span>Logout</span>
                             </a>
