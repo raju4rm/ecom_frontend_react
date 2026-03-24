@@ -14,6 +14,7 @@ export default function PasswordBox({
     onChangeValue,
     onFocusValue,
     onBlurValue,
+    otherErrorsValue
 }) {
 
   return (
@@ -33,6 +34,7 @@ export default function PasswordBox({
             onBlur={onBlurValue} 
         />
         {errorsValue.formErrors && isRequired && !formDataValue[nameValue] && <small id="username2-help" className="p-error block">{labelValue} field is required.</small> }
+        {errorsValue.formErrors && otherErrorsValue && <small id="username2-help" className="p-error block">{otherErrorsValue[nameValue]}</small> }
         {errorsValue.serverErrors && isRequired && formDataValue[nameValue] && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
     </>
   );

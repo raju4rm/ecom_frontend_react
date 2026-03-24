@@ -7,6 +7,7 @@ import PermissionMiddleware from '../middleware/PermissionMiddleware';
 import Login from '../components/authentication/Login';
 import ForgotPassword from '../components/authentication/ForgotPassword';
 import ResetPassword from '../components/authentication/ResetPassword';
+import Signup from '../components/authentication/Signup';
 import AuthLayout from '../components/layout/Auth';
 import MainLayout from '../components/layout/Main';
 import MainLayout2 from '../components/layout2/Main';
@@ -50,6 +51,7 @@ const Backend = () => {
           <Route exact path="/login" element={<Login/>} />
           <Route exact path="/forgot-password" element={<ForgotPassword/>} />
           <Route exact path="/reset-password/:token" element={<ResetPassword/>} />
+          <Route exact path="/signup" element={<Signup/>} />
         </Route>
         
         <Route path="/" element={<AuthenticateMiddleware element={<MainLayout2 />} />}

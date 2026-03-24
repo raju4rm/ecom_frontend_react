@@ -22,6 +22,7 @@ import permission from './backend/permission/slice'
 import brand from './brand/slice'
 import category from './category/slice'
 import testLayout2 from './testLayout2/slice'
+import signin from './signin/slice'
 
 const rootReducer = combineReducers({
   header,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   brand,
   category,
   testLayout2,
+  signin
 });
 
 const persistConfig = {

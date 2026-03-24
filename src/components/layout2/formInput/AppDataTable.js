@@ -1,47 +1,50 @@
-import { useEffect, useState } from 'react';
-import { DataTable } from 'mantine-datatable';
+import React,{ useCallback, useEffect, useState ,useRef }  from 'react'
+import { Link } from 'react-router-dom';
 
-const DEFAULT_PAGE_SIZES = [10, 15, 20, 30, 50, 100];
+import { Group, Text, NumberInput, MantineProvider  } from '@mantine/core';
+import { DataTable } from 'mantine-datatable';
+import employees from '../../../data/employees.json';
+import dayjs from 'dayjs';
 
 export default function AppDataTable({
   data = [],
-  columns = [],
-  pageSizes = DEFAULT_PAGE_SIZES,
-  height = 300,
+  columnsValue = [],
+  heightValue = 300,
+  totalRecordsValue = 0,
 }) {
-  const [pageSize, setPageSize] = useState(pageSizes[1]);
-  const [page, setPage] = useState(1);
-  const [records, setRecords] = useState([]);
+    const PAGE_SIZES = [5, 10, 15, 20, 25, 50, 100];
+    const [pageSize, setPageSize] = useState(PAGE_SIZES[1]); // default 15
+    const [page, setPage] = useState(1);
+    const [records, setRecords] = useState([]);
 
-  // reset page when page size changes
-  useEffect(() => {
-    setPage(1);
-  }, [pageSize]);
 
-  // paginate data
-  useEffect(() => {
-    const from = (page - 1) * pageSize;
-    const to = from + pageSize;
-    setRecords(data.slice(from, to));
-  }, [page, pageSize, data]);
+    useEffect(() => {
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize;
+        setRecords(employees.slice(from, to));
+    }, [page, pageSize]);
 
+    const theme = localStorage.getItem('theme') || 'light';
   return (
-    <DataTable
-      height={height}
-      withTableBorder
-      records={records}
-      columns={columns}
-      totalRecords={data.length}
-      recordsPerPage={pageSize}
-      page={page}
-      onPageChange={setPage}
-      recordsPerPageOptions={pageSizes}
-      onRecordsPerPageChange={setPageSize}
-      paginationText={({ from, to, totalRecords }) =>
-        `Records ${from} - ${to} of ${totalRecords}`
-      }
-      noRecordsText="No records found"
-      loadingText="Loading..."
-    />
+      <DataTable
+          height={300}
+          withTableBorder
+          records={data}
+          columns={[
+              { accessor: 'firstName', width: 100 },
+              { accessor: 'lastName', width: 100 },
+              { accessor: 'email', width: '100%' },
+              
+          ]}
+          totalRecords={data.length}
+          paginationActiveBackgroundColor="grape"
+          recordsPerPage={pageSize}
+          page={page}
+          onPageChange={(p) => setPage(p)}
+          recordsPerPageOptions={PAGE_SIZES}
+          onRecordsPerPageChange={setPageSize}
+          paginationTextColor="dark"
+
+      />
   );
 }

@@ -23,7 +23,7 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <MantineProvider
-            defaultColorScheme="dark"
+            defaultColorScheme="light"
             theme={{
               colors: {
                 dark: [

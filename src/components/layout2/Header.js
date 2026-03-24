@@ -1,7 +1,9 @@
 import React ,{useEffect, useState, useRef} from 'react'
 import { useNavigate,Link } from 'react-router-dom';
 import {logoutA} from '../../store/login/action';
-import { useDispatch, useSelector } from 'react-redux'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { useMantineColorScheme } from '@mantine/core';
+
 
 const Header = ({ isMainMenuCollapse, setIsMainMenuCollapse, toggleSubMenu }) => {
     const [isProfileCollapse,setIsProfileCollapse] = useState(true)
@@ -11,6 +13,8 @@ const Header = ({ isMainMenuCollapse, setIsMainMenuCollapse, toggleSubMenu }) =>
     const [isFullScreen,setIsFullScreen] = useState(false)
     const dispatch                  = useDispatch();
     const navigate = useNavigate();
+    const { colorScheme, setColorScheme } = useMantineColorScheme();
+
 
 
     const toggleMenuCollapse = () => {
@@ -34,12 +38,16 @@ const Header = ({ isMainMenuCollapse, setIsMainMenuCollapse, toggleSubMenu }) =>
     }
 
     useEffect(() => {
+              
         if (isDark) {
             document.documentElement.classList.add('app-skin-dark');
             localStorage.setItem('theme', 'dark');
+            setColorScheme('dark')
         } else {
             document.documentElement.classList.remove('app-skin-dark');
             localStorage.setItem('theme', 'light');
+            setColorScheme('light')
+            
         }
     }, [isDark]);
 

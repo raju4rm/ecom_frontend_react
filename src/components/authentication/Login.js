@@ -8,6 +8,7 @@ import { LoginContext } from '../../context/LoginContext';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { Toast } from 'primereact/toast';
 import {login,reset} from '../../store/login/action'
+import { resetState } from '../../store/login/slice';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -52,9 +53,10 @@ const Login = () => {
             const redirect          = searchParams.get('redirect');
             const redirectUrl       = redirect || '/home1';
             const decodedRedirectUrl= decodeURIComponent(redirectUrl);
-            setValidationErr(null)
+            setValidationErr(null)            
+            dispatch(resetState());
+
             navigate(decodedRedirectUrl)
-            // dispatch(reset());
         } 
         if (error) {
             // setValidationErr(error)
@@ -91,6 +93,7 @@ const Login = () => {
                                                 onChangeValue={handleChange}
                                                 placeholderValue='Email or Username'
                                             />
+                                            
                                         </div>
                                         <div className="mb-3">
                                             <PasswordBox 
@@ -145,7 +148,7 @@ const Login = () => {
                                     </div>
                                     <div className="mt-5 text-muted">
                                         <span> Don't have an account?</span>
-                                        <a href="auth-register-creative.html" className="fw-bold">Create an Account</a>
+                                        <Link to="/signup" className="fw-bold">Create an Account</Link>
                                     </div>
                                 </div>
                             </div>
