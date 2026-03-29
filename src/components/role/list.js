@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 
 import { Group, Text, NumberInput, MantineProvider  } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
-import employees from '../../data/employees.json';
-import dayjs from 'dayjs';
-
 
 
 import { getList, searchItem } from '../../store/role/action'
@@ -29,20 +26,41 @@ export default function List(){
         },
         {
             label: 'Role list',
-            link: '/role'
-        },
-        {
-            label: 'Create',
-        },
+        }
     ]
     /* end breadCrumb value */
 
+    
 
     const columns = [
-        { accessor: 'firstName', title: 'First Name', width: 100 },
-        { accessor: 'lastName', title: 'Last Name', width: 100 },
-        { accessor: 'email', title: 'Email', width: '100%' },
+        {
+        accessor: 'actions',
+        title: 'Action',
+        width: '10%',
+        render: (row) => (
+            <Link to={`/role/edit/${row.id}`}>
+                <i className="feather-edit me-1"></i> 
+            </Link>
+        ),
+    },
+        { accessor: 'name', title: 'First Name', width: '30%' },
+        { accessor: 'slug', title: 'Last Name', width: '30%' },
+        { accessor: 'is_active', title: 'Email', width: '30%' },
     ];
+
+    const states = useSelector((state) => state.role);
+    const { limitPerPage, pageNo } = useSelector((state) => state.pagination);
+    const dispatch = useDispatch();
+    const getItemList = () =>{
+        dispatch(getList({limitPerPage, pageNo}))
+    }
+
+    useEffect(() => {
+        getItemList()
+    },[limitPerPage, pageNo])
+    const { success, summary, severity, message,items,totalCount,loading } = states
+
+
     return ( 
         <>
             <div className="nxl-content">
@@ -58,10 +76,10 @@ export default function List(){
                             </div>
                             <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
                                 
-                                <a  className="btn btn-primary successAlertMessage">
-                                    <i className="feather-save me-2"></i>
-                                    <span>Save</span>
-                                </a>
+                                <Link to='/role/add'  className="btn btn-primary successAlertMessage">
+                                    <i className="feather-plus me-2"></i>
+                                    <span>Create New</span>
+                                </Link>
                             </div>
                         </div>
                         <div className="d-md-none d-flex align-items-center">
@@ -76,7 +94,8 @@ export default function List(){
                         <div className="col-xl-12">
                             <div className="card stretch stretch-full">
                                 <AppDataTable 
-                                    data={employees} 
+                                    totalRecordsValue={totalCount} 
+                                    recordsValue={items}
                                     columnsValue={columns}
                                     heightValue={300}
                                 />

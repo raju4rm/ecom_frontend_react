@@ -41,7 +41,7 @@ const persistConfig = {
   storage,
   // Optionally, you can whitelist or blacklist specific reducers
   // blacklist: ['login'] 
-  // whitelist: ['login'] // only 'login' slice will be persisted
+  whitelist: ['login'] // only 'login' slice will be persisted
   // blacklist: ['header', 'permission'] // 'header' and 'permission' slices won't be persisted
 };
 
