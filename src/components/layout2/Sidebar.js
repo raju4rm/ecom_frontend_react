@@ -76,7 +76,7 @@ const Sidebar = ({ isMainMenuCollapse, isSubMenu, toggleSubMenu, setIsSubMenu })
                           <label>Navigation</label>
                       </li>
                       {menuList.map(eachMenu => (
-                        <li className={`nxl-item nxl-hasmenu ${(isMenuCollapse && menuId==eachMenu.id) ? "nxl-trigger active" : ""}`} id={eachMenu.id} >
+                        <li key={eachMenu.id} className={`nxl-item nxl-hasmenu ${(isMenuCollapse && menuId==eachMenu.id) ? "nxl-trigger active" : ""}`} id={eachMenu.id} >
                             <Link to={eachMenu.url} className="nxl-link" onClick={() => toggleMenuCollapse(eachMenu.id)}>
                                 <span className="nxl-micon"><i className="feather-airplay"></i></span>
                                 <span className="nxl-mtext">{eachMenu.name}</span>
@@ -96,7 +96,7 @@ const Sidebar = ({ isMainMenuCollapse, isSubMenu, toggleSubMenu, setIsSubMenu })
                                         </Link>
                                         <ul className="nxl-submenu" style={{display: (isSubMenuCollapse && eachSubMenu.id == subMenuId) ? "block" : "none"}}>
                                           {eachSubMenu.sub_menu.map(eachSubSubmenu => (
-                                            <li className={`nxl-item ${location.pathname.startsWith(eachSubSubmenu.url) ? 'active' : ''}`} ><Link to={eachSubSubmenu.url} className="nxl-link">{eachSubSubmenu.name}</Link></li>
+                                            <li key={eachSubSubmenu.id} className={`nxl-item ${location.pathname.startsWith(eachSubSubmenu.url) ? 'active' : ''}`} ><Link to={eachSubSubmenu.url} className="nxl-link">{eachSubSubmenu.name}</Link></li>
                                           ))}
                                         </ul>
                                     </li>

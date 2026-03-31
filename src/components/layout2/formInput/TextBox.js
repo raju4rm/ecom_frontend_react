@@ -10,9 +10,9 @@ function TextBox({
     nameValue,
     isRequired,
     placeholderValue,
-    errorsValue,
-    formDataValue,
-    onChangeValue,
+    errorsValue = { formErrors: false, serverErrors: null },
+    formDataValue = {},
+    onChangeValue = () => {},
     onFocusValue,
     onBlurValue,
 
@@ -22,13 +22,13 @@ function TextBox({
             
             <TextInput 
                 label={labelValue}
-                value={value}
+                value={formDataValue[nameValue]}
                 id={idValue} 
                  classNames={{
                     label: 'form-label'
                 }}
                 name={nameValue}
-                // required={isRequired}
+                required={isRequired}
                 placeholder={placeholderValue}
                 onChange={(e) => onChangeValue(e.target.name, e.target.value)}
                 onFocus={onFocusValue}

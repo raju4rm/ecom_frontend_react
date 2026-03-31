@@ -26,18 +26,17 @@ export default function AppDataTable({
     const theme = localStorage.getItem('theme') || 'light';
   return (
       <DataTable
-          height={300}
-          withTableBorder
-          records={recordsValue}
-          columns={columnsValue}
-          totalRecords={totalRecordsValue}
-          paginationActiveBackgroundColor="grape"
-          recordsPerPage={pageSize}
-          page={page}
-          onPageChange={(p) => setPage(p)}
-          recordsPerPageOptions={PAGE_SIZES}
-          onRecordsPerPageChange={setPageSize}
-          paginationTextColor="dark"
+        height={300}
+        withTableBorder
+        records={recordsValue}
+        columns={columnsValue}
+        totalRecords={totalRecordsValue}
+        paginationActiveBackgroundColor="grape"
+        recordsPerPage={pageSize}
+        page={page}
+        onPageChange={(p) => setPage(p)}
+        recordsPerPageOptions={PAGE_SIZES}
+        onRecordsPerPageChange={setPageSize}
 
       />
   );

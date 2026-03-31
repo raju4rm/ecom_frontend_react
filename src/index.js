@@ -12,6 +12,7 @@ import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css'; // REQUIRED
 import '@mantine/core/styles.css';
 import 'mantine-datatable/styles.css';
+import { Notifications } from '@mantine/notifications';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
@@ -42,7 +43,8 @@ root.render(
               primaryColor: 'blue',
             }}
           >
-          <App />
+            <Notifications position="top-right" />
+            <App />
           </MantineProvider>
         </QueryClientProvider>
       </PersistGate>

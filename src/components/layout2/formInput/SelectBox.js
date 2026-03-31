@@ -10,9 +10,9 @@ function SelectBox({
     isRequired,
     defaultOptionValue,
     placeholderValue,
-    formDataValue,
-    errorsValue,
-    onChangeValue,
+    errorsValue = { formErrors: false, serverErrors: null },
+    formDataValue = {},
+    onChangeValue = () => {},
     isFocusedValue,
     resetValue,
     isSearchable,
@@ -39,6 +39,9 @@ function SelectBox({
                 searchable={isSearchable}
                 disabled={isDisabled}
                 onChange={(value) => onChangeValue(nameValue, value)}
+                styles={{
+                    dropdown: { zIndex: 9999 }
+                }}
             />
             {errorsValue.formErrors && isRequired && !formDataValue[nameValue] && <small id="username2-help" className="p-error block">{labelValue} field is required.</small> }
             {errorsValue.serverErrors && isRequired && formDataValue[nameValue] && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
