@@ -1,5 +1,5 @@
 import { Select } from '@mantine/core';
-import React,{ useEffect, useState }  from 'react'
+import React  from 'react'
 
 function SelectBox({
     labelValue,
@@ -8,7 +8,6 @@ function SelectBox({
     classValue,
     nameValue, 
     isRequired,
-    defaultOptionValue,
     placeholderValue,
     errorsValue = { formErrors: false, serverErrors: null },
     formDataValue = {},
@@ -19,8 +18,6 @@ function SelectBox({
     isDisabled
 
 }) {
-        const [selectedOption, setSelectedOption] = useState(defaultOptionValue);
-        const [defaultOptionValueSate, setDefaultOptionValueSate] = useState(defaultOptionValue);
         
     return (
         <>
@@ -34,7 +31,7 @@ function SelectBox({
                 }}
                 name={nameValue}
                 required={isRequired}
-                defaultValue={defaultOptionValue}
+                value={formDataValue[nameValue]}
                 placeholder={placeholderValue}            
                 searchable={isSearchable}
                 disabled={isDisabled}
@@ -44,7 +41,7 @@ function SelectBox({
                 }}
             />
             {errorsValue.formErrors && isRequired && !formDataValue[nameValue] && <small id="username2-help" className="p-error block">{labelValue} field is required.</small> }
-            {errorsValue.serverErrors && isRequired && formDataValue[nameValue] && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
+            {errorsValue.serverErrors  && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
         </>
     );
 }

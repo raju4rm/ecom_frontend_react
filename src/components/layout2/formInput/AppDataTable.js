@@ -14,7 +14,7 @@ export default function AppDataTable({
 }) {
     const { limitPerPage, pageNo } = useSelector((state) => state.pagination);    
     const PAGE_SIZES = [5, 10, 15, 20, 25, 50, 100];
-    const [pageSize, setPageSize] = useState(PAGE_SIZES[1]); // default 15
+    const [pageSize, setPageSize] = useState(limitPerPage); 
     const [page, setPage] = useState(pageNo);
     const dispatch = useDispatch();
     

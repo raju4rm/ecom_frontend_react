@@ -1,4 +1,4 @@
-import React,{ useEffect, useState }  from 'react'
+import React  from 'react'
 import { TextInput } from '@mantine/core';
 
 
@@ -37,7 +37,7 @@ function TextBox({
             />
             
             {errorsValue.formErrors && isRequired && !formDataValue[nameValue] && <small id="username2-help" className="p-error block">{labelValue} field is required.</small> }
-            {errorsValue.serverErrors && isRequired && formDataValue[nameValue] && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
+            {errorsValue.serverErrors  && <small id="username2-help" className="p-error block">{errorsValue.serverErrors[nameValue]}</small> }
         </>
     )
 }

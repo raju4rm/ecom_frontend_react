@@ -11,6 +11,8 @@
     summary:'Success',
     errors: null,
     success :false,
+    error :false,
+    errorCode :null
 };
 const slice = createSlice({
   name: 'role',
@@ -52,7 +54,9 @@ const slice = createSlice({
       state.loading   = false 
       state.message   = 'Server error' 
       state.severity  = 'error'
-      state.summary   = 'Failed'  
+      state.summary   = 'Failed'
+      state.error     = true 
+      state.errorCode =  action.payload.status   
     },
     responseFailureStatus: (state, action) => {  
         state.status    = true
@@ -61,14 +65,17 @@ const slice = createSlice({
         state.severity  = 'error'
         state.summary   = 'Failed'
         state.errors    =  action.payload.data.errors 
+        state.error     =  true
+        state.errorCode =  action.payload.status 
     },
     clearState: (state, action) => {  
       state.status    = false
       state.loading   = false 
-      state.message   = '' 
-      state.severity  = ''
-      state.summary   = ''
+      // state.message   = '' 
+      // state.severity  = ''
+      // state.summary   = ''
       state.success   = false
+      state.error     = false
       state.item      = {}
       state.errors    = null
     },

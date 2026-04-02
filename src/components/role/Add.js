@@ -1,17 +1,12 @@
 import React,{ useCallback, useEffect, useState }  from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { notifications } from '@mantine/notifications';     
 import '@mantine/notifications/styles.css';
 import { useNavigate, Link } from 'react-router-dom';
-
 
 import BreadCrumbComponent from '../layout2/BreadCrumbComponent';
 import TextBox from '../layout2/formInput/TextBox';
 import SelectBox from '../layout2/formInput/SelectBox';
 import { setAdd } from '../../store/role/action';
-import { clearState } from '../../store/role/slice';
-
-
 
 export default function Add(){
     const module = 'Add Role';
@@ -32,7 +27,7 @@ export default function Add(){
     const [formData, setFormData]                   = useState({name:"",is_active:""}); 
     const {name, is_active} = formData;
     const states                                    = useSelector((state) => state.role); 
-    const {loading,errors,success} = states 
+    const {loading,errors,success,error,errorCode} = states 
 
     // On change update value
     const handleChange = (name, value) => {
@@ -55,14 +50,21 @@ export default function Add(){
 
     //Set server errors
     useEffect(() => {  
-        setValidationErrors((prevState) => ({ ...prevState, serverErrors: errors }));
+        console.log(error,success);
         if(success){ 
             setValidationErrors({ serverErrors: null, formErrors: false })
             const decodedRedirectUrl= decodeURIComponent('/role');
             navigate(decodedRedirectUrl)
-            dispatch(clearState())
+            // dispatch(clearState())
         }
-    }, [errors,success]);  
+        if(error){ 
+            setValidationErrors((prevState) => ({ ...prevState, serverErrors: errors }));
+            const decodedRedirectUrl= decodeURIComponent('/role');
+            if(errorCode!=422){
+                navigate(decodedRedirectUrl)
+            }
+        }
+    }, [error,success,errors]);  
     
 
     const options = [
@@ -108,7 +110,6 @@ export default function Add(){
                                                 classValue="is_active"
                                                 nameValue="is_active"
                                                 isRequired={true}
-                                                defaultOptionValue="a"
                                                 placeholderValue="Status"
                                                 isSearchable={true}
                                                 isDisabled={false}

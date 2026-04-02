@@ -2,7 +2,6 @@
 import { loadingStart, successStatus ,responseFailureStatus,failureStatus,responseData,editRecord} from "./slice"
 import { permisssionFailureStatus} from "../backend/permission/slice"
 import axios from "../../utils/axios";
-import { useDispatch, useSelector } from 'react-redux';
 
 //add
 export const setAdd = (payload) => async (dispatch) => {  
@@ -73,9 +72,8 @@ export const getList = (payload) => async (dispatch) => {
 export const searchItem = (payload) => async (dispatch) => { 
   dispatch(loadingStart());    
   try { 
-    const page      = 1
-    const per_page  = 10
-    let baseUrl     = `admin/role?search=1&page=${page}&per_page=${per_page}`
+    console.log(payload,'qwq');
+    let baseUrl     = `admin/role?search=1&page=${payload.pageNo}&per_page=${payload.limitPerPage}`
     const name      =  payload.name
     const slug      =  payload.slug
     const isActive      =  payload.is_active

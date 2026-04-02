@@ -1,4 +1,4 @@
-import React,{ useCallback, useEffect, useState ,useRef }  from 'react'
+import React,{ useCallback, useEffect, useState  }  from 'react'
 import {  Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,7 +37,7 @@ export default function List(){
             title: 'Action',
             width: '10%',
             render: (row) => (
-                <Link  key={row.id}  to={`/role/edit/${row.id}`}>
+                <Link  key={row.role_id}  to={`/role/edit/${row.role_id}`}>
                     <i className="feather-edit me-1"></i> 
                 </Link>
             ),
@@ -61,12 +61,15 @@ export default function List(){
 
     /* all data at 1st visit start */
     const states = useSelector((state) => state.role);
-    const { success, summary, severity, message,items,totalCount,loading } = states
+    const { success, summary, severity, message,items,totalCount,loading,error } = states
     const { limitPerPage, pageNo } = useSelector((state) => state.pagination);
     const dispatch = useDispatch();
     const getItemList = () =>{
-        dispatch(getList({limitPerPage, pageNo}))
-        
+        if (isFilterApplied) {
+            dispatch(searchItem({ ...formData, limitPerPage, pageNo }));
+        } else {
+            dispatch(getList({ limitPerPage, pageNo }));
+        }
     }
     useEffect(() => {
         getItemList()
@@ -74,7 +77,7 @@ export default function List(){
     /* all data at 1st visit end */
 
     /* form data store start */
-    const [formData, setFormData] = useState({name: "",is_active:"", errors: null });  
+    const [formData, setFormData] = useState({name: "",is_active:"",limitPerPage:limitPerPage, pageNo:pageNo, errors: null });  
     const handleChange = useCallback((name, value) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -84,13 +87,15 @@ export default function List(){
     /* form data store end */
 
     /* filter & reset submit start */
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
     const handleSubmit = async (e) => { 
-        console.log(formData);
+        setIsFilterApplied(true);
         await dispatch(searchItem(formData))
     };
 
     const resetFilter = () => {
-        setFormData({name:""}); 
+        setIsFilterApplied(false);
+        setFormData({ name: "", is_active: "" }); 
         getItemList()
     };
     /* filter & reset submit start */
@@ -103,7 +108,19 @@ export default function List(){
     ];
     /* status dropdown option end */
 
-    
+    /* toaster start */
+    useEffect(()=>{
+        if(severity){
+            notifications.show({
+                color: severity=='error' ? 'red' : 'green' ,
+                title: summary,
+                message: message,
+            });
+            dispatch(clearState())
+        }
+    },[success,error])
+    /* toaster end */
+
     return ( 
         <>
             <div className="nxl-content">

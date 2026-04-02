@@ -1,63 +1,15 @@
 import React,{ useCallback, useEffect, useState }  from 'react'
-import { Button } from 'primereact/button';
-
-import 'primereact/resources/primereact.min.css';
-import 'primereact/resources/themes/nano/theme.css';
-import 'primeicons/primeicons.css';
-
-import { getEdit, setEdit } from '../../store/role/action'
 import { useDispatch, useSelector } from 'react-redux';
-import BreadCrumbComponent from '../BreadCrumbComponent';
-import TextBoxFloating from '../TextBoxFloating';
+import '@mantine/notifications/styles.css';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import SelectBoxComponent from '../SelectBoxComponent';
 
+import BreadCrumbComponent from '../layout2/BreadCrumbComponent';
+import TextBox from '../layout2/formInput/TextBox';
+import SelectBox from '../layout2/formInput/SelectBox';
+import { getEdit, setEdit } from '../../store/role/action';
 
-export default function Edit(props){
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const module = 'Edit Role';
-    const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
-    const [formData, setFormData]                   = useState({name:"", is_active:""}); 
-    const {name,is_active} = formData;
-    const states                                    = useSelector((state) => state.role); 
-    const {loading,errors,success,item} = states 
-    const [isFocused, setIsFocused] = useState(false);
-    const [reset, setReset] = useState(false);
-
-    // On change update value
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-    };
-
-    //Call get api
-    const handleSubmit = async (e) => { 
-        e.preventDefault();
-        const error =   !name || !is_active;
-        if (error) {
-            setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
-        } else {
-            await dispatch(setEdit(formData))
-            setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
-        } 
-    };
-
-    // loading button start
-    const [buttonLoading, setLoading] = useState(false);
-    const load = () => {
-        setLoading(true);
-
-        setTimeout(() => {
-            setLoading(false);
-        }, 2000);
-    };
-    //loading button end 
-
+export default function Edit(){
+    const module = 'Role';
     /* start breadCrumb value */
     const BreadCrumbValue = [
         {
@@ -67,19 +19,16 @@ export default function Edit(props){
             label: 'Edit Role',
         },
     ]
-    
     /* end breadCrumb value */
-
-    //Set server errors
-    useEffect(() => {  
-        setValidationErrors((prevState) => ({ ...prevState, serverErrors: errors }));
-        if(success){ 
-            setValidationErrors({ serverErrors: null, formErrors: false })
-            const decodedRedirectUrl= decodeURIComponent('/role');
-            navigate(decodedRedirectUrl)
-        }
-    }, [errors,success]);  
     
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
+    const [formData, setFormData]                   = useState({name:"",is_active:""}); 
+    const {name, is_active} = formData;
+    const states                                    = useSelector((state) => state.role); 
+    const {loading,errors,success,error,errorCode,item} = states 
 
     //Call get api
     useEffect(() => {  
@@ -88,6 +37,7 @@ export default function Edit(props){
         }  
     }, []);
 
+    /* data show in form */
     useEffect(() => { 
         if(item) { setFormData({
             name: item.name !== undefined ? item.name : "", 
@@ -98,107 +48,119 @@ export default function Edit(props){
         if(errors) { setFormData((prevState) => ({ ...prevState, seterror:errors }));  }  
     }, [errors,success,item]);
 
-    // select start
+
+    // On change update value
+    const handleChange = (name, value) => {
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    //submit form
+    const handleSubmit = async (e) => { 
+        e.preventDefault();
+        if (!name || !is_active) {
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: true }));
+        } else {
+            await dispatch(setEdit(formData))
+            setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
+        } 
+    };
+
+    //Set server errors
+    useEffect(() => {  
+        console.log(error,success);
+        if(success){ 
+            setValidationErrors({ serverErrors: null, formErrors: false })
+            const decodedRedirectUrl= decodeURIComponent('/role');
+            navigate(decodedRedirectUrl)
+            // dispatch(clearState())
+        }
+        if(error){ 
+            setValidationErrors((prevState) => ({ ...prevState, serverErrors: errors }));
+            const decodedRedirectUrl= decodeURIComponent('/role');
+            if(errorCode!=422){
+                navigate(decodedRedirectUrl)
+            }
+        }
+    }, [error,success,errors]);    
+    
 
     const options = [
         { value: '', label: 'Select Status' },
         { value: 'y', label: 'Active' },
         { value: 'n', label: 'In-Active' },
     ];
-
-    // select end
-    const handleSelectChange = (selectedOption, fieldName) => {
-        let value;
-        if(selectedOption){
-            setIsFocused(true);
-            value=selectedOption.value;
-        }else{
-            setIsFocused(false);
-            value='';
-        }
-        setFormData({
-            ...formData,
-            [fieldName.name]:  value ,
-        });
-    };
     return ( 
         <>
-            <div className="content-wrapper">
-
-                <BreadCrumbComponent BreadCrumbValue={BreadCrumbValue} module={module}/>
-
-                {/* start main section */}
-                <section className="content">
-                    <div className="container-fluid">
-                        <div className='row'>
-                            <div className='col-12'>
-                                <div className='card custom-card'>
-                                    <div className="card-header">
-                                        <p className='card-title'>
-                                            <strong>
-                                                {module}
-                                            </strong>
-                                        </p>
+           {/* <main className="nxl-container"> */}
+            <div className="nxl-content">
+                <div className="page-header">
+                    <BreadCrumbComponent BreadCrumbValue={BreadCrumbValue} module={module} />
+                    
+                </div>
+                <div className="main-content">
+                    <div className="row">
+                        <div className="col-xl-6">
+                            <div className="card stretch stretch-full">
+                                <form 
+                                    noValidate="novalidate"
+                                    onSubmit={handleSubmit}
+                                >
+                                    <div className="card-body">
+                                        <div className="mb-4">
+                                            <TextBox 
+                                                labelValue='Role Name'
+                                                idValue='name'
+                                                classValue='name'
+                                                nameValue='name' 
+                                                isRequired={true}
+                                                errorsValue={validationErrors}
+                                                formDataValue={formData}
+                                                onChangeValue={handleChange}
+                                                placeholderValue='Role Name'
+                                            />
+                                        </div>
+                                        <div className="mb-4">
+                                            <SelectBox
+                                                labelValue='Status'
+                                                optionsValue={options}
+                                                idValue="is_active"
+                                                classValue="is_active"
+                                                nameValue="is_active"
+                                                isRequired={true}
+                                                placeholderValue="Status"
+                                                isSearchable={true}
+                                                isDisabled={false}
+                                                formDataValue={formData}
+                                                errorsValue={validationErrors}
+                                                onChangeValue={handleChange}
+                                                resetValue={false}
+                                            />
+                                        </div>
+                                        <div class="d-flex justify-content-end gap-2 mt-3">
+                                            <Link to="/role" id="back" class="btn btn-md bg-soft-danger text-danger" ><i className="feather-arrow-left me-2"></i> Back</Link>
+                                            <button id="save" class="btn btn-md btn-primary" disabled={loading}>
+                                                {loading ? (
+                                                        <>
+                                                            <span className="spinner-border spinner-border-sm me-2"></span>
+                                                            Loading...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <i className="feather-save me-2"></i> Update
+                                                        </>
+                                                    )
+                                                }                                                
+                                            </button>
+                                        </div>
                                     </div>
-                                    <form 
-                                        noValidate="novalidate"
-                                        onSubmit={handleSubmit}
-                                    >
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="form-group col-md-4">
-                                                    <TextBoxFloating 
-                                                        typeValue="text"
-                                                        labelValue='Name'
-                                                        idValue='name'
-                                                        classValue=''
-                                                        nameValue='name' 
-                                                        requiredValue={true}
-                                                        errorsValue={validationErrors}
-                                                        formDataValue={formData}
-                                                        onChangeValue={handleChange}
-                                                        placeholderValue=''
-                                                        value={name}
-                                                    />
-                                                </div>
-                                                <div className="form-group col-md-4">
-                                                    <SelectBoxComponent 
-                                                        optionsValue={options} 
-                                                        labelValue='Status' 
-                                                        isMulti={false} 
-                                                        isLoading={true} 
-                                                        idValue='is_active'
-                                                        classValue=''
-                                                        nameValue='is_active' 
-                                                        requiredValue={true}
-                                                        value={is_active}
-                                                        defaultOptionValue={options.find(item => formData.is_active === item.value) }
-                                                        onChangeValue={handleSelectChange}
-                                                        errorsValue={validationErrors}
-                                                        formDataValue={formData}
-                                                        isFocusedValue={isFocused}
-                                                        resetValue={reset}
-                                                    />
-                                                </div>
-                                                
-                                                
-                                            </div>
-                                        </div>
-                                    
-                                        <div className="card-footer" style={{textAlign:'right'}}>
-                                            <Link to="/role" className="p-button p-component p-button-rounded p-button-warning" > <span className="pi pi-arrow-left"></span> Back</Link>
-                                            &nbsp;
-                                            <Button type="submit" label="Submit" severity="success" rounded icon="pi pi-check" loading={buttonLoading} /> 
-                                            
-                                        </div>
-                                    </form>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        
                     </div>
-                </section>
-                {/* end main section */}
+                </div>
             </div>
         </>
     )
