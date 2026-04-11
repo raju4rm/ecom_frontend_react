@@ -9,6 +9,7 @@ export const setAdd = (payload) => async (dispatch) => {
   dispatch(loadingStart());  
   try {  
       const response = await axios.post('admin/master/category',payload); 
+      console.log(response);
       const {data} = response;
     if (data.status) {
       dispatch(successStatus(data)); 

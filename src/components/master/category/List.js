@@ -1,97 +1,27 @@
-import React,{ useCallback, useEffect, useState ,useRef }  from 'react'
-import { Link } from 'react-router-dom';
+import React,{ useCallback, useEffect, useState  }  from 'react'
+import {  Link } from 'react-router-dom';
 
-import { Button } from 'primereact/button';
+import { useDispatch, useSelector } from 'react-redux';
+import { notifications } from '@mantine/notifications';     
+import '@mantine/notifications/styles.css';
 
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import 'primereact/resources/primereact.min.css';
-import 'primereact/resources/themes/nano/theme.css';
-import 'primeicons/primeicons.css';
-import { Tooltip } from 'primereact/tooltip';
-
-import { Tag } from 'primereact/tag';
-import { InputText } from "primereact/inputtext";
-import { FloatLabel } from "primereact/floatlabel";
 
 import { getList, searchItem } from '../../../store/category/action'
-import { useDispatch, useSelector } from 'react-redux';
-import PaginatorComponent from '../../PaginatorComponent';
-import BreadCrumbComponent from '../../BreadCrumbComponent';
-import SelectBoxComponent from '../../SelectBoxComponent';
-import TextBoxFloating from '../../TextBoxFloating';
-import { Toast } from 'primereact/toast';
-import {clearState} from '../../../store/category/slice'
+import BreadCrumbComponent from '../../layout2/BreadCrumbComponent';
+import {clearState} from '../../../store/role/slice'
+import AppDataTable from '../../layout2/formInput/AppDataTable';
+import TextBox from '../../layout2/formInput/TextBox';
+import AppFilter from '../../layout2/formInput/AppFilter';
+import SelectBox from '../../layout2/formInput/SelectBox';
+
+
 
 export default function List(){
     const module = 'Category';
-    const [validationErrors, setValidationErrors]   = useState({ serverErrors: null, formErrors: false })
-    const [formData, setFormData]                   = useState({name:"", slug:"", is_active:""}); 
-    const {name, slug, is_active} = formData;
-    const toast = useRef(null);
-    const [isFocused, setIsFocused] = useState(false);
-    const [reset, setReset] = useState(false);
-    const [loadingButton, setLoadingButton] = useState('');
-
-
-    
-    // On change update value
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-    
-    const handleSelectChange = (selectedOption, fieldName) => {
-        let value;
-        if(selectedOption){
-            setIsFocused(true);
-            value=selectedOption.value;
-        }else{
-            setIsFocused(false);
-            value='';
-        }
-        setFormData({
-            ...formData,
-            [fieldName.name]:  value ,
-        });
-    };
-    //Call get api
-
-    
-
-    
-    /* start filter */
-    const [isCollapsFilter,setIsCollapsFilter]= useState(true);
-    const toggleFilter = () => {
-        setIsCollapsFilter(!isCollapsFilter);
-    }
-
-    // loading button start
-    const resetFilter = () => {
-        setFormData({name:"", slug:"", is_active:''}); 
-        setReset(true)
-        getItemList()
-        setLoadingButton('reset');        
-    };
-
-    //loading button end 
-
-    const handleSubmit = async (e) => { 
-        e.preventDefault();
-        await dispatch(searchItem(formData))
-        setValidationErrors((prevState) => ({ ...prevState, formErrors: false }));
-        setLoadingButton('filter');
-
-    };
-    /* end filter */
-
     /* start breadCrumb value */
     const BreadCrumbValue = [
         {
-            label: 'Master Setup',
+            label: 'Master',
         },
         {
             label: 'Category',
@@ -100,217 +30,156 @@ export default function List(){
             label: 'List',
         },
     ]
-    
     /* end breadCrumb value */
 
-    // select start
-
-    const options = [
-        { value: '', label: 'Select Status' },
-        { value: 'y', label: 'Active' },
-        { value: 'n', label: 'In-Active' },
+    /* datatable data start */
+    const columns = [
+        {
+            accessor: 'actions',
+            title: 'Action',
+            width: '10%',
+            render: (row) => (
+                <Link  key={row.master_category_id}  to={`/role/edit/${row.master_category_id}`}>
+                    <i className="feather-edit me-1"></i> 
+                </Link>
+            ),
+        },
+        { accessor: 'name', title: 'Name', width: '30%' },
+        { accessor: 'name', title: 'Parent', width: '30%' },
+        { accessor: 'icon', title: 'Icon', width: '30%' },
+        { accessor: 'image', title: 'Image', width: '30%' },
+        { accessor: 'sort_order', title: 'Sort Order', width: '30%' },
+        {
+            accessor: 'is_active',
+            title: 'Status',
+            width: '30%',
+            render: (row) => (
+                row.is_active === 'y' ? (
+                <span  key={row.id} className='badge bg-soft-success text-success '>Active</span>
+                ) : (
+                <span  key={row.id} className='badge bg-soft-danger text-danger '>In-Active</span>
+                )
+            ),
+        }
     ];
+    /* datatable data end */
 
-    // select end
-
-    const dispatch = useDispatch();
-    const [data, setData] = useState([]);
-    const [totalRecords, setTotalRecords] = useState(0);
-   
-
+    /* all data at 1st visit start */
     const states = useSelector((state) => state.category);
+    const { success, summary, severity, message,items,totalCount,loading,error } = states
     const { limitPerPage, pageNo } = useSelector((state) => state.pagination);
-
-    const getItemList = () => {
-        dispatch(getList({  limitPerPage, pageNo }))
+    const dispatch = useDispatch();
+    const getItemList = () =>{
+        if (isFilterApplied) {
+            dispatch(searchItem({ ...formData, limitPerPage, pageNo }));
+        } else {
+            dispatch(getList({ limitPerPage, pageNo }));
+        }
     }
     useEffect(() => {
         getItemList()
-    }, [limitPerPage, pageNo]);
-    
-    const { success, summary, severity, message,items,totalCount,loading } = states
-    
-    useEffect(() => {
-        if (items) { setData(items) }
-        if (totalCount) { setTotalRecords(totalCount) }
-        if (message) { 
-            toast.current.show({ severity: severity, summary: summary, detail: message, life: 3000 }); 
-            dispatch(clearState());
-        }
-        
-    }, [success, items, totalCount]);
-       
+        console.log(items);
+    },[limitPerPage, pageNo])
+    /* all data at 1st visit end */
 
-    /* status label start */
-    const statusBodyTemplate = (items) => {
-        return <Tag value={getStatusText(items.is_active)} severity={getSeverity(items)}></Tag>;
-    }
+    /* form data store start */
+    const [formData, setFormData] = useState({name: "",is_active:"",limitPerPage:limitPerPage, pageNo:pageNo, errors: null });  
+    const handleChange = useCallback((name, value) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    }, []);
+    /* form data store end */
 
-    const getStatusText = (status) => {
-        switch (status) {
-            case 'y':
-                return 'Active';
-            case 'n':
-                return 'In-Active';
-            default:
-                return '';
-        }
+    /* filter & reset submit start */
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
+    const handleSubmit = async (e) => { 
+        setIsFilterApplied(true);
+        await dispatch(searchItem(formData))
     };
-    const getSeverity = (items) => {
-        switch (items.is_active) {
-            case 'y':
-                return 'success';
-            case 'n':
-                return 'danger';
-            default:
-                return null;
+
+    const resetFilter = () => {
+        setIsFilterApplied(false);
+        setFormData({ name: "", is_active: "" }); 
+        getItemList()
+    };
+    /* filter & reset submit start */
+
+    /* status dropdown option start */
+    const options = [
+        { value: '', label: 'All Status' },
+        { value: 'y', label: 'Active' },
+        { value: 'n', label: 'In-Active' },
+    ];
+    /* status dropdown option end */
+
+    /* toaster start */
+    useEffect(()=>{
+        if(severity){
+            notifications.show({
+                color: severity=='error' ? 'red' : 'green' ,
+                title: summary,
+                message: message,
+            });
+            dispatch(clearState())
         }
-    };
-    /* status label end */
+    },[success,error])
+    /* toaster end */
 
-
-    const actionBodyTemplate = (items) => {
-        return (
-            <>
-            <Link to={`/master/category/edit/${items.master_category_id}`} className="p-button role_edit" tooltip="Save" tooltipOptions={{ position: 'bottom', mouseTrack: true, mouseTrackTop: 15 }}> <span className="pi pi-pencil"></span> </Link> &nbsp;
-            
-            </>
-        );
-    };
-    
-
-    
     return ( 
         <>
-            <div className="content-wrapper">
-                <Toast ref={toast} />
-            
-                <BreadCrumbComponent BreadCrumbValue={BreadCrumbValue} module={module}/>
-
-                {/* start filter  */}
-                <section className="content">
-                    <div className={`card card-default custom-card-default ${isCollapsFilter?'collapsed-card':''}`}>
-                        <div className="card-header">
-                            <p className='card-title'>
-                                <strong>
-                                    Filter {module}
-                                </strong>
-                            </p>
-                            <div className="card-tools">
-                                <Button text icon={` ${isCollapsFilter? 'pi pi-plus' : 'pi pi-minus' }`} onClick={toggleFilter} /> 
-                            </div>
-                        </div>
-                        <form 
-                            noValidate="novalidate"
-                            onSubmit={handleSubmit}
-                        > 
-                            <div className="card-body">
-                                
-                                <div className="row">
-                                    <div className="form-group col-md-4">
-                                        <TextBoxFloating 
-                                            typeValue="text"
-                                            labelValue='Name'
-                                            idValue='name'
-                                            classValue=''
-                                            nameValue='name' 
-                                            requiredValue={false}
-                                            errorsValue={validationErrors}
-                                            formDataValue={formData}
-                                            onChangeValue={handleChange}
-                                            placeholderValue=''
-                                            value={name}
-                                        />
-                                    </div>
-                                    
-                                    <div className="form-group col-md-4">
-                                        <SelectBoxComponent 
-                                            optionsValue={options} 
-                                            labelValue='Status' 
-                                            isMulti={false} 
-                                            isLoading={true} 
-                                            idValue='is_active'
-                                            classValue=''
-                                            nameValue='is_active' 
-                                            requiredValue={false}
-                                            value={is_active}
-                                            defaultOptionValue={options.find(item => formData.is_active === item.value) }
-                                            onChangeValue={handleSelectChange}
-                                            errorsValue={validationErrors}
-                                            formDataValue={formData}
-                                            isFocusedValue={isFocused}
-                                            resetValue={reset}
-                                        />
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <div className="card-footer" style={{textAlign:'right'}}>
-                                <Button 
-                                    label="Reset" 
-                                    severity="secondary" 
-                                    rounded 
-                                    icon="pi pi-undo" 
-                                    loading={loadingButton === 'reset' && loading} 
-                                    onClick={resetFilter} 
-                                    
-                                /> 
-                                &nbsp;
-                                <Button 
-                                    type="submit" 
-                                    label="Filter" 
-                                    rounded 
-                                    icon="pi pi-filter-fill" 
-                                    loading={loadingButton === 'filter' && loading} 
-                                /> 
-                                
-                            </div>
-                        </form>
-                    </div>
-                </section>
-                {/* end filter  */}
-
-                {/* start main section */}
-                <section className="content">
-                    <div className="container-fluid">
-                        <div className='row'>
-                            <div className='col-12'>
-                                <div className='card custom-card'>
-                                    <div className="card-header">
-                                        <p className='card-title'>
-                                            <strong>
-                                                {module}
-                                            </strong>
-                                        </p>
-                                        <Link to="/master/category/add" className="p-button p-component p-button-rounded p-button-success" style={{float:'right'}} > <span className="pi pi-plus"></span> Add New</Link>
-                                    </div>
-
-                                    <div className='card-body'>
-                                        <div className='row'>
-                                            <div className='col-sm-12'>
-                                                <DataTable value={data}  sortMode="multiple"  tableStyle={{ minWidth: '50rem' }} scrollable scrollHeight="400px"
-                                                    stripedRows>
-                                                    <Column body={actionBodyTemplate} header="Actions" />
-                                                    <Column header="Status" body={statusBodyTemplate}></Column>
-
-                                                    <Column sortable field="name" header="Name" style={{ width: '25%' }}></Column>
-                                                    <Column field="description" header="Description" style={{ width: '25%' }}></Column>
-
+            <div className="nxl-content">
+                <div className="page-header">
+                    <BreadCrumbComponent BreadCrumbValue={BreadCrumbValue} module={module} />
                     
-                                                </DataTable>
-                                                <Tooltip target=".role_edit" mouseTrack mouseTrackLeft={10} />
-                                                <PaginatorComponent totalRecords={totalRecords} />
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <AppFilter handleSubmitValue={handleSubmit} resetFilterValue={resetFilter} loadingValue={loading}
+>
+                        <div className="dropdown-item">
+                            <TextBox 
+                                labelValue='Role Name'
+                                idValue='name'
+                                classValue='name'
+                                nameValue='name'
+                                isRequired={false}
+                                formDataValue={formData}
+                                onChangeValue={handleChange}
+                                placeholderValue='Role Name'
+                            />
+                        </div>
+                        <div className="dropdown-item">
+                            <SelectBox
+                                labelValue='Status'
+                                optionsValue={options}
+                                idValue="is_active"
+                                classValue="is_active"
+                                nameValue="is_active"
+                                isRequired={false}
+                                defaultOptionValue=""
+                                placeholderValue="Status"
+                                isSearchable={true}
+                                isDisabled={false}
+                                formDataValue={formData}
+                                onChangeValue={handleChange}
+                                resetValue={false}
+                            />
+                        </div>                        
+                    </AppFilter>
+                </div>
+                <div className="main-content">
+                    <div className="row">
+                        <div className="col-xl-12">
+                            <div className="card stretch stretch-full">
+                                <AppDataTable 
+                                    totalRecordsValue={totalCount} 
+                                    recordsValue={items}
+                                    columnsValue={columns}
+                                    heightValue={300}
+                                />
                             </div>
                         </div>
-                        
                     </div>
-                </section>
-                {/* end main section */}
+                </div>
             </div>
         </>
     )
