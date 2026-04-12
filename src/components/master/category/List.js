@@ -33,6 +33,9 @@ export default function List(){
     /* end breadCrumb value */
 
     /* datatable data start */
+    const BaseUrl = process.env.REACT_APP_API_BASEURL;
+
+
     const columns = [
         {
             accessor: 'actions',
@@ -44,15 +47,53 @@ export default function List(){
                 </Link>
             ),
         },
-        { accessor: 'name', title: 'Name', width: '30%' },
-        { accessor: 'name', title: 'Parent', width: '30%' },
-        { accessor: 'icon', title: 'Icon', width: '30%' },
-        { accessor: 'image', title: 'Image', width: '30%' },
-        { accessor: 'sort_order', title: 'Sort Order', width: '30%' },
+        { accessor: 'name', title: 'Name', width: '20%' },
+        { accessor: 'parent.name', title: 'Parent', width: '20%' },
+        {
+            accessor: 'icon',
+            title: 'Icon',
+            render: (row) => (
+                row.icon ? (
+                    <div className="image-hover-wrapper">
+                        <img 
+                            src={`${BaseUrl}${row.icon}`} 
+                            alt="thumb"
+                            className="thumb-img"
+                        />
+                        <img 
+                            src={`${BaseUrl}${row.icon}`} 
+                            alt="preview"
+                            className="hover-img"
+                        />
+                    </div>
+                ) : 'N/A'
+            ),
+        },
+        { 
+            accessor: 'image', 
+            title: 'Image', 
+            render: (row) => (
+                row.image ? (
+                    <div className="image-hover-wrapper">
+                        <img 
+                            src={`${BaseUrl}${row.image}`} 
+                            alt="thumb"
+                            className="thumb-img"
+                        />
+                        <img 
+                            src={`${BaseUrl}${row.image}`} 
+                            alt="preview"
+                            className="hover-img"
+                        />
+                    </div>
+                ) : 'N/A'
+            ),
+        },
+        { accessor: 'sort_order', title: 'Sort Order', width: '10%' },
         {
             accessor: 'is_active',
             title: 'Status',
-            width: '30%',
+            width: '10%',
             render: (row) => (
                 row.is_active === 'y' ? (
                 <span  key={row.id} className='badge bg-soft-success text-success '>Active</span>

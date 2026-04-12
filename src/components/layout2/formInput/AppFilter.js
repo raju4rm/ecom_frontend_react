@@ -1,5 +1,5 @@
 import React,{ useCallback, useEffect, useState ,useRef }  from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function AppFilter({
     children,
@@ -7,6 +7,7 @@ export default function AppFilter({
     resetFilterValue,
     loadingValue
 }){
+    const location = useLocation();
     const filterRef = useRef(null);
     const [isFilter,setIsFilter] = useState(false);
     const toggleFilter = () =>{
@@ -84,7 +85,7 @@ export default function AppFilter({
                                 
                             </div>
                         </div>
-                        <Link to='/role/add'  className="btn btn-md btn-primary">
+                        <Link to={`${location.pathname}/add`}  className="btn btn-md btn-primary">
                             <i className="feather-plus me-2"></i>
                             <span>Create New</span>
                         </Link>

@@ -79,14 +79,14 @@ export const menuList=[
         sub_menu:   [
             {
                 name    :   'Brand',
-                url     :   'master/brand',
+                url     :   '/master/brand',
                 active  :   'Brand',
                 id      :   'brand',   
                 icon    :   'fa fa-angle-double-right',
             },
             {
                 name    :   'Category',
-                url     :   '/category',
+                url     :   '/master/category',
                 active  :   'Category',
                 id      :   'category',   
                 icon    :   'fa fa-angle-double-right',

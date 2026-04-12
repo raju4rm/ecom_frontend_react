@@ -18,3 +18,30 @@ code {
   margin: 0px; 
   transform: translate(-133px, 48px);
 }
+.image-hover-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.thumb-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.hover-img {
+    position: fixed; /* 🔥 important */
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    display: none;
+    z-index: 9999; /* 🔥 above all */
+    pointer-events: none;
+}
+
+.image-hover-wrapper:hover .hover-img {
+    display: block;
+}

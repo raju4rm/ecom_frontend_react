@@ -84,15 +84,15 @@ export default function Add(){
         console.log(error,success);
         if(success){ 
             setValidationErrors({ serverErrors: null, formErrors: false })
-            const decodedRedirectUrl= decodeURIComponent('/role');
-            // navigate(decodedRedirectUrl)
+            const decodedRedirectUrl= decodeURIComponent('/master/category');
+            navigate(decodedRedirectUrl)
             // dispatch(clearState())
         }
         if(error){ 
             setValidationErrors((prevState) => ({ ...prevState, serverErrors: errors }));
-            const decodedRedirectUrl= decodeURIComponent('/role');
+            const decodedRedirectUrl= decodeURIComponent('/master/category');
             if(errorCode!=422){
-                // navigate(decodedRedirectUrl)
+                navigate(decodedRedirectUrl)
             }
         }
     }, [error,success,errors]);  
