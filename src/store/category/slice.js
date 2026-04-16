@@ -72,10 +72,11 @@ const slice = createSlice({
     clearState: (state, action) => {  
       state.status    = false
       state.loading   = false 
-      state.message   = '' 
-      state.severity  = ''
-      state.summary   = ''
+      // state.message   = '' 
+      // state.severity  = ''
+      // state.summary   = ''
       state.success   = false
+      state.error     = false
       state.item      = {}
       state.errors    = null
     },

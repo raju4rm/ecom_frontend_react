@@ -8,12 +8,12 @@ import '@mantine/notifications/styles.css';
 
 import { getList, searchItem } from '../../../store/category/action'
 import BreadCrumbComponent from '../../layout2/BreadCrumbComponent';
-import {clearState} from '../../../store/role/slice'
+import {clearState} from '../../../store/category/slice'
 import AppDataTable from '../../layout2/formInput/AppDataTable';
 import TextBox from '../../layout2/formInput/TextBox';
 import AppFilter from '../../layout2/formInput/AppFilter';
 import SelectBox from '../../layout2/formInput/SelectBox';
-
+import axios from '../../../utils/axios';
 
 
 export default function List(){
@@ -42,7 +42,7 @@ export default function List(){
             title: 'Action',
             width: '10%',
             render: (row) => (
-                <Link  key={row.master_category_id}  to={`/role/edit/${row.master_category_id}`}>
+                <Link  key={row.master_category_id}  to={`/master/category/edit/${row.master_category_id}`}>
                     <i className="feather-edit me-1"></i> 
                 </Link>
             ),
@@ -119,12 +119,11 @@ export default function List(){
     }
     useEffect(() => {
         getItemList()
-        console.log(items);
     },[limitPerPage, pageNo])
     /* all data at 1st visit end */
 
     /* form data store start */
-    const [formData, setFormData] = useState({name: "",is_active:"",limitPerPage:limitPerPage, pageNo:pageNo, errors: null });  
+    const [formData, setFormData] = useState({name: "",is_active:"",parent_id:"",limitPerPage:limitPerPage, pageNo:pageNo, errors: null });  
     const handleChange = useCallback((name, value) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -137,12 +136,13 @@ export default function List(){
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const handleSubmit = async (e) => { 
         setIsFilterApplied(true);
+        console.log(formData);
         await dispatch(searchItem(formData))
     };
 
     const resetFilter = () => {
         setIsFilterApplied(false);
-        setFormData({ name: "", is_active: "" }); 
+        setFormData({ name: "", is_active: "",parent_id:"", }); 
         getItemList()
     };
     /* filter & reset submit start */
@@ -157,6 +157,7 @@ export default function List(){
 
     /* toaster start */
     useEffect(()=>{
+        console.log(severity,success,error,'ppppppppp');
         if(severity){
             notifications.show({
                 color: severity=='error' ? 'red' : 'green' ,
@@ -168,6 +169,26 @@ export default function List(){
     },[success,error])
     /* toaster end */
 
+    const [parentOption,setParentOption] = useState([{ value: '', label: 'Select Parent Category' }])    
+    const getParentOption = async () => {
+        try {
+            const result = await axios.get('admin/master/category/all');
+            console.log(result);
+            const formatted = [
+                { value: '', label: 'Select Parent Category' },
+                ...result.data.data.map(item => ({
+                    value: String(item.master_category_id),
+                    label: item.name
+                }))
+            ];
+            setParentOption(formatted);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    useEffect(() => {
+        getParentOption()
+    },[])
     return ( 
         <>
             <div className="nxl-content">
@@ -178,16 +199,33 @@ export default function List(){
 >
                         <div className="dropdown-item">
                             <TextBox 
-                                labelValue='Role Name'
+                                labelValue='Category Name'
                                 idValue='name'
                                 classValue='name'
                                 nameValue='name'
                                 isRequired={false}
                                 formDataValue={formData}
                                 onChangeValue={handleChange}
-                                placeholderValue='Role Name'
+                                placeholderValue='Category Name'
                             />
                         </div>
+                         <div className="dropdown-item">
+                            <SelectBox
+                                labelValue='Parent Category'
+                                optionsValue={parentOption}
+                                idValue="parent_id"
+                                classValue="parent_id"
+                                nameValue="parent_id"
+                                isRequired={false}
+                                defaultOptionValue=""
+                                placeholderValue="Parent Category"
+                                isSearchable={true}
+                                isDisabled={false}
+                                formDataValue={formData}
+                                onChangeValue={handleChange}
+                                resetValue={false}
+                            />
+                        </div>  
                         <div className="dropdown-item">
                             <SelectBox
                                 labelValue='Status'

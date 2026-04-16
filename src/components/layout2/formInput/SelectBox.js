@@ -36,6 +36,10 @@ function SelectBox({
                 searchable={isSearchable}
                 disabled={isDisabled}
                 onChange={(value) => onChangeValue(nameValue, value)}
+                comboboxProps={{
+                    withinPortal: false,
+                    zIndex: 10000
+                }}
                 styles={{
                     dropdown: { zIndex: 9999 }
                 }}

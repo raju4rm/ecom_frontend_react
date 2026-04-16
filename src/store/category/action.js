@@ -78,10 +78,11 @@ export const searchItem = (payload) => async (dispatch) => {
     const per_page  = 10
     let baseUrl     = `admin/master/category?search=1&page=${page}&per_page=${per_page}`
     const name      =  payload.name
-    const isActive      =  payload.is_active
-    console.log(payload)
+    const is_active      =  payload.is_active
+    const parent_id      =  payload.parent_id
     if(name) { baseUrl = `${baseUrl}&name=${name}` }
-    if(isActive) { baseUrl = `${baseUrl}&isActive=${isActive}` }
+    if(is_active) { baseUrl = `${baseUrl}&is_active=${is_active}` }
+    if(parent_id) { baseUrl = `${baseUrl}&parent_id=${parent_id}` }
     const {data} = await axios.get(baseUrl);  
     if (data.status) {
       dispatch(responseData(data)); 
